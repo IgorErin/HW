@@ -14,7 +14,7 @@ internal class ReshetoTest {
     }
 
     @Test
-    fun `test throw error for negative umber`() {
+    fun `test throw error for negative number`() {
         assertThrows<IllegalArgumentException> {
             createListOfPrime(-4)
         }
