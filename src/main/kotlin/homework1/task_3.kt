@@ -1,5 +1,10 @@
+interface CommandStorage {
+    fun reversAction()
+    fun printListOfNumbers()
+    fun returnListOfNumbers(): List<Int>
+}
 
-class PerformedCommandStorage {
+class PerformedCommandStorage : CommandStorage {
     private val action = mutableListOf<String>()
     private val listOfNumbers = mutableListOf<Int>()
     private val listOfIndexes = mutableListOf<List<Int>>()
@@ -26,7 +31,7 @@ class PerformedCommandStorage {
         listOfIndexes.add(listOf(indexI, indexJ))
     }
 
-    fun reversAction() {
+    override fun reversAction() {
         require(action.size >= 1) { "the stack of completed actions is empty" }
 
         when (action.removeAt(action.size - 1)) {
@@ -44,11 +49,11 @@ class PerformedCommandStorage {
         }
     }
 
-    fun printListOfNumbers() {
+    override fun printListOfNumbers() {
         println(listOfNumbers.joinToString(", ", "numbers: "))
     }
 
-    fun returnListOfNumbers(): List<Int> {
+    override fun returnListOfNumbers(): List<Int> {
         return listOfNumbers
     }
 }
@@ -56,12 +61,12 @@ class PerformedCommandStorage {
 fun getCommand(): List<String> {
     val stringOfCommand = readLine()
 
-    require(stringOfCommand != null) { "null pointer exception" }
+    require(stringOfCommand != null) { "input error" }
 
     return stringOfCommand.split(Regex("\\s+"))
 }
 
-fun interaction(listOfCommand: List<String>, storage: PerformedCommandStorage): List<Int>{
+fun interaction(listOfCommand: List<String>, storage: PerformedCommandStorage): List<Int> {
     val minimumLength = 2
 
     when (listOfCommand[0]) {
@@ -79,10 +84,8 @@ fun interaction(listOfCommand: List<String>, storage: PerformedCommandStorage): 
         }
         "PRT" -> storage.printListOfNumbers()
         "REV" -> storage.reversAction()
-        "END" -> return storage.returnListOfNumbers()
         else -> {
             println("invalid command, repeat the input")
-            return storage.returnListOfNumbers()
         }
     }
     return storage.returnListOfNumbers()

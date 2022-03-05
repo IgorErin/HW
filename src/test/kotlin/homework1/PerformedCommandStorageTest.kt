@@ -1,105 +1,87 @@
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.Arguments
-import org.junit.jupiter.params.provider.MethodSource
+import kotlin.test.assertFailsWith
 
 internal class PerformedCommandStorageTest {
     var storageForTest = PerformedCommandStorage()
+    var storageForTestInit = PerformedCommandStorage()
+
+    init {
+        for (i in 1..5) {
+            storageForTestInit.addToEnd(i)
+        }
+    }
 
     @Test
-    fun `test throw error for index out of range`() {
-        assertThrows<IllegalArgumentException> {
-            interaction(listOf("MOV", "1", "11"), storageForTest)
-        }
+    fun `test throw error for first index out of range`() {
+        val exception = assertFailsWith<IllegalArgumentException>(
+            block = { interaction(listOf("MOV", "7", "1"), storageForTestInit) }
+        )
+        assertEquals("first index out of range", exception.message)
+    }
+
+    @Test
+    fun `test throw error for second index out of range`() {
+        val exception = assertFailsWith<IllegalArgumentException>(
+            block = { interaction(listOf("MOV", "1", "11"), storageForTestInit) }
+        )
+        assertEquals("second index out of range", exception.message)
     }
 
     @Test
     fun `test throw error for empty list of actions`() {
-        assertThrows<IllegalArgumentException> {
-            interaction(listOf("UND"), storageForTest)
-        }
+        val exception = assertFailsWith<IllegalArgumentException>(
+            block = { interaction(listOf("REV"), storageForTest) }
+        )
+        assertEquals("the stack of completed actions is empty", exception.message)
     }
 
     @Test
     fun `test throw error for invalid index`() {
-        assertThrows<NumberFormatException> {
-            interaction(listOf("MOV", "4AsukaIsBetterThanRei", "MOV"), storageForTest)
-        }
+        val exception = assertFailsWith<NumberFormatException>(
+            block = { interaction(listOf("MOV", "AsukaIsBetterThanRei", "2"), storageForTestInit) }
+        )
+        assertEquals("For input string: \"AsukaIsBetterThanRei\"", exception.message)
+    }
+
+    @Test
+    fun `test for invalid command`() {
+
+        assertEquals(listOf(1, 2, 3, 4, 5), interaction(listOf("MoV", "6e"), storageForTestInit))
     }
 
     @Test
     fun `test throw error for incomplete input for first argument`() {
-        assertThrows<IllegalArgumentException> {
-            interaction(listOf("MOV"), storageForTest)
-        }
+        val exception = assertFailsWith<IllegalArgumentException>(
+            block = { interaction(listOf("MOV"), storageForTestInit) }
+        )
+        assertEquals("incomplete input", exception.message)
     }
 
     @Test
     fun `test throw error for incomplete input for second argument`() {
-        assertThrows<IllegalArgumentException> {
-            interaction(listOf("MOV", "1"), storageForTest)
-        }
+        val exception = assertFailsWith<IllegalArgumentException>(
+            block = { interaction(listOf("MOV", "1"), storageForTest) }
+        )
+        assertEquals("incomplete input", exception.message)
     }
 
-    /*@ParameterizedTest
-    @MethodSource("testForAddingToEnd")
-    fun `test for adding to end`(excepted: List<Int>, listOfInt: List<Int>) {
-        assertEquals(excepted, listOfInt)
-    }*/
-
-    @ParameterizedTest
-    @MethodSource("testForAddingToBegin")
-    fun `test for adding to begin`(excepted: List<Int>, listOfCommand: List<String>) {
-        assertEquals(excepted, interaction(listOfCommand, storageForTest))
+    @Test
+    fun `test for add to end`() {
+        assertEquals(listOf(1, 2, 3, 4, 5, 6), interaction(listOf("TTE", "6"), storageForTestInit))
     }
 
-    /*@ParameterizedTest
-    @MethodSource("testForChange")
-    fun `test for change`(excepted: List<Int>, listOfCommand: List<String>) {
-        assertEquals(excepted, interaction(listOfCommand, storageForTest))
+    @Test
+    fun `test for add to begin`() {
+        assertEquals(listOf(0, 1, 2, 3, 4, 5), interaction(listOf("TTB", "0"), storageForTestInit))
     }
-
-    @ParameterizedTest
-    @MethodSource("testForRevers")
-    fun `test for revers`(excepted: List<Int>, listOfCommand: List<String>) {
-        assertEquals(excepted, interaction(listOfCommand, storageForTest))
-    }*/
-
-    companion object {
-        //var storageForTest = PerformedCommandStorage()
-        /*@JvmStatic
-        fun testForAddingToEnd() = (
-            interaction(listOf("TTE", "1"), storageForTest),
-            Arguments.of(listOf(1), storageForTest.returnListOfNumbers()),
-            /*Arguments.of(listOf(1), interaction(listOf("TTE", "2"), storageForTest)),
-            Arguments.of(listOf(1, 2), interaction(listOf("TTE", "3"), storageForTest)),
-            Arguments.of(listOf(1, 2, 3), interaction(listOf("TTE", "4"), storageForTest))*/
-        )*/
-
-        @JvmStatic
-        fun testForAddingToBegin() = listOf(
-            Arguments.of(listOf(0, 1, 2, 3, 4), listOf("TTB", "0")),
-            Arguments.of(listOf(-1, 0, 1, 2, 3, 4), listOf("TTB", "-1")),
-            Arguments.of(listOf(-2, -1, 0, 1, 2, 3, 4), listOf("TTB", "-2")),
-            Arguments.of(listOf(-3, -2, -1, 0, 1, 2, 3, 4), listOf("TTB", "-3")),
-        )
-
-        @JvmStatic
-        fun testForChange() = listOf(
-            Arguments.of(listOf(4, -2, -1, 0, 1, 2, 3, -3), listOf("MOV", "0", "7")),
-            Arguments.of(listOf(4, 3, -1, 0, 1, 2, -2, -3), listOf("MOV", "1", "6")),
-            Arguments.of(listOf(4, 3, 2, 0, 1, -1, -2, -3), listOf("MOV", "2", "5")),
-            Arguments.of(listOf(4, 3, 2, 1, 0, -1, -2, -3), listOf("MOV", "3", "4"))
-        )
-
-        @JvmStatic
-        fun testForRevers() = listOf(
-            Arguments.of(listOf(4, 3, 2, 0, 1, -1, -2, -3), listOf("REV")),
-            Arguments.of(listOf(4, 3, -1, 0, 1, 2, -2, -3), listOf("REV")),
-            Arguments.of(listOf(4, -2, -1, 0, 1, 2, 3, -3), listOf("REV"))
-        )
+    @Test
+    fun `test fot mov`() {
+        assertEquals(listOf(1, 3, 4, 2, 5), interaction(listOf("MOV", "1", "3"), storageForTestInit))
+    }
+    @Test
+    fun `test fot revers action`() {
+        assertEquals(listOf(1, 2, 3, 4), interaction(listOf("REV"), storageForTestInit))
     }
 }
