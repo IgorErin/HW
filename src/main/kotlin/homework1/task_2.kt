@@ -1,24 +1,18 @@
 import kotlin.math.ceil
 import kotlin.math.sqrt
+import kotlin.system.exitProcess
 
-fun createListOfPrime(number: Int?): List<Int> {
-
-    require(number != null) { "Count must be >= 2, was null" }
+fun createListOfPrime(number: Int): List<Int> {
 
     require(number >= 2) { "Count must be >= 2, was $number" }
 
-    var primes: List<Int> = (2..number).toList()
+    val primes: MutableList<Int> = (2..number).toMutableList()
 
     for (div in 2..ceil(sqrt(number.toDouble())).toInt()) {
-        primes = primes.filter { it % div != 0 || it == div }
+        primes.retainAll { it % div != 0 || it == div }
     }
 
     return primes
-}
-
-fun printPrimeNumbers(primes: List<Int>) {
-    print(primes.joinToString(", ", "", "\n"))
-    println("The prime numbers are shown above")
 }
 
 fun main() {
@@ -27,8 +21,14 @@ fun main() {
 
     val number = readLine()?.toIntOrNull()
 
+    if (number == null) {
+        print("Count must be >= 2, was null")
+        exitProcess(0)
+    }
+
     try {
-        printPrimeNumbers(createListOfPrime(number))
+        println(createListOfPrime(number).joinToString(", "))
+        println("The prime numbers are shown above")
     } catch (e: IllegalArgumentException) {
         print(e.message)
     }

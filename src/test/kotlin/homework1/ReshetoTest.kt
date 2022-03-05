@@ -1,9 +1,9 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import kotlin.test.assertFailsWith
 
 internal class ReshetoTest {
 
@@ -14,16 +14,11 @@ internal class ReshetoTest {
     }
 
     @Test
-    fun `test throw error for negative number`() {
-        assertThrows<IllegalArgumentException> {
-            createListOfPrime(-4)
-        }
-    }
-    @Test
-    fun `test throw error for small positive number`() {
-        assertThrows<IllegalArgumentException> {
-            createListOfPrime(1)
-        }
+    fun `given incorrect input`() {
+        val exception = assertFailsWith<IllegalArgumentException>(
+            block = { createListOfPrime(-2) }
+        )
+        assertEquals("Count must be >= 2, was -2", exception.message)
     }
 
     companion object {
