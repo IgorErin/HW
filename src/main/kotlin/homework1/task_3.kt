@@ -1,60 +1,69 @@
+private const val MINIMUM_LENGTH = 2
+
 interface CommandStorage {
-    fun reversAction()
-    fun printListOfNumbers()
-    fun returnListOfNumbers(): List<Int>
+    fun reverseAction()
+    fun returnStringOfNumbers(): String
+}
+
+enum class Action {
+    ADD_TO_HEAD, ADD_TO_TAIL, MOVE
+}
+
+enum class Command(val stringNameOfCommand: String) {
+    ADD_TO_END("TTE"),
+    ADD_TO_BEGIN("TTB"),
+    MOVE("MOV"),
+    PRINT("PRT"),
+    REVERSE("REV")
 }
 
 class PerformedCommandStorage : CommandStorage {
-    private val action = mutableListOf<String>()
+    private val actions = mutableListOf<Action>()
     private val listOfNumbers = mutableListOf<Int>()
     private val listOfIndexes = mutableListOf<List<Int>>()
 
     fun addToBegin(number: Int) {
         listOfNumbers.add(0, number)
-        action.add("addToHead")
+        actions.add(Action.ADD_TO_HEAD)
     }
 
     fun addToEnd(number: Int) {
         listOfNumbers.add(number)
-        action.add("addToTail")
+        actions.add(Action.ADD_TO_TAIL)
     }
 
-    fun move(indexI: Int, indexJ: Int) {
-        require(indexI >= 0 && indexI < listOfNumbers.size) { "first index out of range" }
-        require(indexJ >= 0 && indexJ < listOfNumbers.size) { "second index out of range" }
+    fun move(currentIndex: Int, finalIndex: Int) {
+        require(currentIndex in listOfNumbers.indices) { "first index out of range" }
+        require(finalIndex in listOfNumbers.indices) { "second index out of range" }
 
-        val numForMove: Int = listOfNumbers[indexI]
+        val numForMove: Int = listOfNumbers[currentIndex]
 
-        listOfNumbers.removeAt(indexI)
-        listOfNumbers.add(indexJ, numForMove)
-        action.add("moveFromIToJ")
-        listOfIndexes.add(listOf(indexI, indexJ))
+        listOfNumbers.removeAt(currentIndex)
+        listOfNumbers.add(finalIndex, numForMove)
+        actions.add(Action.MOVE)
+        listOfIndexes.add(listOf(currentIndex, finalIndex))
     }
 
-    override fun reversAction() {
-        require(action.size >= 1) { "the stack of completed actions is empty" }
+    override fun reverseAction() {
+        require(actions.size >= 1) { "the stack of completed actions is empty" }
 
-        when (action.removeAt(action.size - 1)) {
-            "addToHead" -> {
-                listOfNumbers.removeAt(0)
+        when (actions.removeLast()) {
+            Action.ADD_TO_HEAD -> {
+                listOfNumbers.removeFirst()
             }
-            "addToTail" -> {
-                listOfNumbers.removeAt(listOfNumbers.size - 1)
+            Action.ADD_TO_TAIL -> {
+                listOfNumbers.removeLast()
             }
-            "moveFromIToJ" -> {
+            Action.MOVE -> {
                 move(listOfIndexes[listOfIndexes.size - 1][1], listOfIndexes[listOfIndexes.size - 1][0])
-                listOfIndexes.removeAt(listOfIndexes.size - 1)
-                action.removeAt(action.size - 1)
+                listOfIndexes.removeLast()
+                actions.removeLast()
             }
         }
     }
 
-    override fun printListOfNumbers() {
-        println(listOfNumbers.joinToString(", ", "numbers: "))
-    }
-
-    override fun returnListOfNumbers(): List<Int> {
-        return listOfNumbers
+    override fun returnStringOfNumbers(): String {
+        return listOfNumbers.joinToString(separator = ", ", prefix = "numbers: ")
     }
 }
 
@@ -63,32 +72,32 @@ fun getCommand(): List<String> {
 
     require(stringOfCommand != null) { "input error" }
 
-    return stringOfCommand.split(Regex("\\s+"))
+    return stringOfCommand.split(" ")
 }
 
-fun interaction(listOfCommand: List<String>, storage: PerformedCommandStorage): List<Int> {
-    val minimumLength = 2
+fun interaction(listOfCommand: List<String>, storage: PerformedCommandStorage): String {
+    require(listOfCommand.isNotEmpty()) { "repeat the input, please" }
 
     when (listOfCommand[0]) {
-        "TTE" -> {
-            require(listOfCommand.size >= minimumLength) { "incomplete input" }
+        Command.ADD_TO_END.stringNameOfCommand -> {
+            require(listOfCommand.size >= MINIMUM_LENGTH) { "incomplete input" }
             storage.addToEnd(listOfCommand[1].toInt())
         }
-        "TTB" -> {
-            require(listOfCommand.size >= minimumLength) { "incomplete input" }
+        Command.ADD_TO_BEGIN.stringNameOfCommand -> {
+            require(listOfCommand.size >= MINIMUM_LENGTH) { "incomplete input" }
             storage.addToBegin(listOfCommand[1].toInt())
         }
-        "MOV" -> {
-            require(listOfCommand.size >= minimumLength + 1) { "incomplete input" }
+        Command.MOVE.stringNameOfCommand -> {
+            require(listOfCommand.size >= MINIMUM_LENGTH + 1) { "incomplete input" }
             storage.move(listOfCommand[1].toInt(), listOfCommand[2].toInt())
         }
-        "PRT" -> storage.printListOfNumbers()
-        "REV" -> storage.reversAction()
+        Command.PRINT.stringNameOfCommand -> println(storage.returnStringOfNumbers())
+        Command.REVERSE.stringNameOfCommand -> storage.reverseAction()
         else -> {
             println("invalid command, repeat the input")
         }
     }
-    return storage.returnListOfNumbers()
+    return storage.returnStringOfNumbers()
 }
 
 fun main() {
