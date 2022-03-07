@@ -75,7 +75,7 @@ fun getCommand(): List<String> {
     return stringOfCommand.split(" ")
 }
 
-fun interaction(listOfCommand: List<String>, storage: PerformedCommandStorage): String {
+fun interactions(listOfCommand: List<String>, storage: PerformedCommandStorage): String {
     require(listOfCommand.isNotEmpty()) { "repeat the input, please" }
 
     when (listOfCommand[0]) {
@@ -116,7 +116,7 @@ fun main() {
 
     while (listOfCommand[0] != "END") {
         try {
-            interaction(listOfCommand, storage)
+            interactions(listOfCommand, storage)
         } catch (e: NumberFormatException) {
             println("invalid arguments, repeat the input")
         } catch (e: IllegalArgumentException) {
