@@ -114,6 +114,11 @@ fun main() {
 
     var listOfCommand = getCommand()
 
+    while (listOfCommand.isEmpty()) {
+        println("repeat the input, please")
+        listOfCommand = getCommand()
+    }
+
     while (listOfCommand[0] != "END") {
         try {
             interactions(listOfCommand, storage)
