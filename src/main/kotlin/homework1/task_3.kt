@@ -1,6 +1,6 @@
 private const val MINIMUM_LENGTH = 2
 
-enum class Action{
+enum class Action {
     ADD_TO_HEAD, ADD_TO_TAIL, MOVE
 }
 
@@ -40,32 +40,22 @@ class PerformedCommandStorage() {
     private val listOfNumbers = mutableListOf<Int>()
     private val listOfIndexes = mutableListOf<Pair<Int, Int>>()
 
-    fun doAction(listOfCommand: List<String>) {
-        require(listOfCommand.isNotEmpty()) { "repeat the input, please" }
-
-        when (listOfCommand[0]) {
-            Command.ADD_TO_END.stringNameOfCommand -> {
-                require(listOfCommand.size >= MINIMUM_LENGTH) { "incomplete input" }
-                addToEnd(listOfCommand[1].toInt(), listOfNumbers, actions)
+    fun doAction(command: Action, firstArgument: Int, secondArgument: Int) {
+        when (command) {
+            Action.ADD_TO_TAIL -> {
+                addToEnd(firstArgument, listOfNumbers, actions)
             }
-            Command.ADD_TO_BEGIN.stringNameOfCommand -> {
-                require(listOfCommand.size >= MINIMUM_LENGTH) { "incomplete input" }
-                addToBegin(listOfCommand[1].toInt(), listOfNumbers, actions)
+            Action.ADD_TO_HEAD -> {
+                addToBegin(firstArgument, listOfNumbers, actions)
             }
-            Command.MOVE.stringNameOfCommand -> {
-                require(listOfCommand.size >= MINIMUM_LENGTH + 1) { "incomplete input" }
-                move(listOfCommand[1].toInt(), listOfCommand[2].toInt(), listOfNumbers, actions, listOfIndexes)
+            Action.MOVE -> {
+                move(firstArgument, secondArgument, listOfNumbers, actions, listOfIndexes)
                 println(actions)
-            }
-            Command.PRINT.stringNameOfCommand -> println(returnListOfNumbers())
-            Command.REVERSE.stringNameOfCommand -> reverseAction()
-            else -> {
-                println("invalid command, repeat the input")
             }
         }
     }
 
-    private fun reverseAction() {
+    fun reverseAction() {
         require(actions.isNotEmpty()) { "the stack of completed actions is empty" }
 
         when (actions.removeLast()) {
@@ -86,7 +76,7 @@ class PerformedCommandStorage() {
         }
     }
 
-    private fun returnListOfNumbers(): List<Int> {
+    fun returnListOfNumbers(): List<Int> {
         return listOfNumbers
     }
 }
