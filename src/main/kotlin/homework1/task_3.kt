@@ -1,12 +1,6 @@
 private const val MINIMUM_LENGTH = 2
 
-interface CommandStorage {
-    fun reverseAction()
-    fun returnStringOfNumbers(): String
-    fun returnListOfNumbers(): List<Int>
-}
-
-enum class Action {
+enum class Action{
     ADD_TO_HEAD, ADD_TO_TAIL, MOVE
 }
 
@@ -18,34 +12,60 @@ enum class Command(val stringNameOfCommand: String) {
     REVERSE("REV")
 }
 
-class PerformedCommandStorage : CommandStorage {
+fun addToBegin(number: Int, listOfNumbers: MutableList<Int>, actions: MutableList<Action>) {
+    listOfNumbers.add(0, number)
+    actions.add(Action.ADD_TO_HEAD)
+}
+
+fun addToEnd(number: Int, listOfNumbers: MutableList<Int>, actions: MutableList<Action>) {
+    listOfNumbers.add(number)
+    actions.add(Action.ADD_TO_TAIL)
+}
+
+fun move(currentIndex: Int, finalIndex: Int, listOfNumbers: MutableList<Int>,
+         actions: MutableList<Action>, listOfIndexes: MutableList<Pair<Int, Int>>) {
+    require(currentIndex in listOfNumbers.indices) { "first index out of range" }
+    require(finalIndex in listOfNumbers.indices) { "second index out of range" }
+
+    val numForMove = listOfNumbers[currentIndex]
+
+    listOfNumbers.removeAt(currentIndex)
+    listOfNumbers.add(finalIndex, numForMove)
+    actions.add(Action.MOVE)
+    listOfIndexes.add(currentIndex to finalIndex)
+}
+
+class PerformedCommandStorage() {
     private val actions = mutableListOf<Action>()
     private val listOfNumbers = mutableListOf<Int>()
     private val listOfIndexes = mutableListOf<Pair<Int, Int>>()
 
-    fun addToBegin(number: Int) {
-        listOfNumbers.add(0, number)
-        actions.add(Action.ADD_TO_HEAD)
+    fun doAction(listOfCommand: List<String>) {
+        require(listOfCommand.isNotEmpty()) { "repeat the input, please" }
+
+        when (listOfCommand[0]) {
+            Command.ADD_TO_END.stringNameOfCommand -> {
+                require(listOfCommand.size >= MINIMUM_LENGTH) { "incomplete input" }
+                addToEnd(listOfCommand[1].toInt(), listOfNumbers, actions)
+            }
+            Command.ADD_TO_BEGIN.stringNameOfCommand -> {
+                require(listOfCommand.size >= MINIMUM_LENGTH) { "incomplete input" }
+                addToBegin(listOfCommand[1].toInt(), listOfNumbers, actions)
+            }
+            Command.MOVE.stringNameOfCommand -> {
+                require(listOfCommand.size >= MINIMUM_LENGTH + 1) { "incomplete input" }
+                move(listOfCommand[1].toInt(), listOfCommand[2].toInt(), listOfNumbers, actions, listOfIndexes)
+                println(actions)
+            }
+            Command.PRINT.stringNameOfCommand -> println(returnListOfNumbers())
+            Command.REVERSE.stringNameOfCommand -> reverseAction()
+            else -> {
+                println("invalid command, repeat the input")
+            }
+        }
     }
 
-    fun addToEnd(number: Int) {
-        listOfNumbers.add(number)
-        actions.add(Action.ADD_TO_TAIL)
-    }
-
-    fun move(currentIndex: Int, finalIndex: Int) {
-        require(currentIndex in listOfNumbers.indices) { "first index out of range" }
-        require(finalIndex in listOfNumbers.indices) { "second index out of range" }
-
-        val numForMove = listOfNumbers[currentIndex]
-
-        listOfNumbers.removeAt(currentIndex)
-        listOfNumbers.add(finalIndex, numForMove)
-        actions.add(Action.MOVE)
-        listOfIndexes.add(currentIndex to finalIndex)
-    }
-
-    override fun reverseAction() {
+    private fun reverseAction() {
         require(actions.isNotEmpty()) { "the stack of completed actions is empty" }
 
         when (actions.removeLast()) {
@@ -56,18 +76,17 @@ class PerformedCommandStorage : CommandStorage {
                 listOfNumbers.removeLast()
             }
             Action.MOVE -> {
-                move(listOfIndexes[listOfIndexes.size - 1].second, listOfIndexes[listOfIndexes.size - 1].first)
+                move(listOfIndexes[listOfIndexes.size - 1].second,
+                    listOfIndexes[listOfIndexes.size - 1].first, listOfNumbers, actions, listOfIndexes)
+                listOfIndexes.removeLast()
                 listOfIndexes.removeLast()
                 actions.removeLast()
+                println(actions)
             }
         }
     }
 
-    override fun returnStringOfNumbers(): String {
-        return listOfNumbers.joinToString(separator = ", ", prefix = "numbers: ")
-    }
-
-    override fun returnListOfNumbers(): List<Int> {
+    private fun returnListOfNumbers(): List<Int> {
         return listOfNumbers
     }
 }
@@ -78,31 +97,6 @@ fun getCommand(): List<String> {
     require(stringOfCommand != null) { "input error" }
 
     return stringOfCommand.split(" ")
-}
-
-fun interactions(listOfCommand: List<String>, storage: PerformedCommandStorage): String {
-    require(listOfCommand.isNotEmpty()) { "repeat the input, please" }
-
-    when (listOfCommand[0]) {
-        Command.ADD_TO_END.stringNameOfCommand -> {
-            require(listOfCommand.size >= MINIMUM_LENGTH) { "incomplete input" }
-            storage.addToEnd(listOfCommand[1].toInt())
-        }
-        Command.ADD_TO_BEGIN.stringNameOfCommand -> {
-            require(listOfCommand.size >= MINIMUM_LENGTH) { "incomplete input" }
-            storage.addToBegin(listOfCommand[1].toInt())
-        }
-        Command.MOVE.stringNameOfCommand -> {
-            require(listOfCommand.size >= MINIMUM_LENGTH + 1) { "incomplete input" }
-            storage.move(listOfCommand[1].toInt(), listOfCommand[2].toInt())
-        }
-        Command.PRINT.stringNameOfCommand -> println(storage.returnStringOfNumbers())
-        Command.REVERSE.stringNameOfCommand -> storage.reverseAction()
-        else -> {
-            println("invalid command, repeat the input")
-        }
-    }
-    return storage.returnStringOfNumbers()
 }
 
 fun main() {
@@ -126,7 +120,7 @@ fun main() {
 
     while (listOfCommand[0] != "END") {
         try {
-            interactions(listOfCommand, storage)
+            storage.doAction(listOfCommand)
         } catch (e: NumberFormatException) {
             println("invalid arguments, repeat the input")
         } catch (e: IllegalArgumentException) {
