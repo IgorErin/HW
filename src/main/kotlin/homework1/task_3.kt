@@ -3,6 +3,7 @@ private const val MINIMUM_LENGTH = 2
 interface CommandStorage {
     fun reverseAction()
     fun returnStringOfNumbers(): String
+    fun returnListOfNumbers(): List<Int>
 }
 
 enum class Action {
@@ -20,7 +21,7 @@ enum class Command(val stringNameOfCommand: String) {
 class PerformedCommandStorage : CommandStorage {
     private val actions = mutableListOf<Action>()
     private val listOfNumbers = mutableListOf<Int>()
-    private val listOfIndexes = mutableListOf<List<Int>>()
+    private val listOfIndexes = mutableListOf<Pair<Int, Int>>()
 
     fun addToBegin(number: Int) {
         listOfNumbers.add(0, number)
@@ -36,16 +37,16 @@ class PerformedCommandStorage : CommandStorage {
         require(currentIndex in listOfNumbers.indices) { "first index out of range" }
         require(finalIndex in listOfNumbers.indices) { "second index out of range" }
 
-        val numForMove: Int = listOfNumbers[currentIndex]
+        val numForMove = listOfNumbers[currentIndex]
 
         listOfNumbers.removeAt(currentIndex)
         listOfNumbers.add(finalIndex, numForMove)
         actions.add(Action.MOVE)
-        listOfIndexes.add(listOf(currentIndex, finalIndex))
+        listOfIndexes.add(currentIndex to finalIndex)
     }
 
     override fun reverseAction() {
-        require(actions.size >= 1) { "the stack of completed actions is empty" }
+        require(actions.isNotEmpty()) { "the stack of completed actions is empty" }
 
         when (actions.removeLast()) {
             Action.ADD_TO_HEAD -> {
@@ -55,7 +56,7 @@ class PerformedCommandStorage : CommandStorage {
                 listOfNumbers.removeLast()
             }
             Action.MOVE -> {
-                move(listOfIndexes[listOfIndexes.size - 1][1], listOfIndexes[listOfIndexes.size - 1][0])
+                move(listOfIndexes[listOfIndexes.size - 1].second, listOfIndexes[listOfIndexes.size - 1].first)
                 listOfIndexes.removeLast()
                 actions.removeLast()
             }
@@ -64,6 +65,10 @@ class PerformedCommandStorage : CommandStorage {
 
     override fun returnStringOfNumbers(): String {
         return listOfNumbers.joinToString(separator = ", ", prefix = "numbers: ")
+    }
+
+    override fun returnListOfNumbers(): List<Int> {
+        return listOfNumbers
     }
 }
 
