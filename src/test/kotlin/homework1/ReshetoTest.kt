@@ -15,9 +15,7 @@ internal class ReshetoTest {
 
     @Test
     fun `given incorrect input`() {
-        val exception = assertFailsWith<IllegalArgumentException>(
-            block = { createListOfPrime(-2) }
-        )
+        val exception = assertFailsWith<IllegalArgumentException> { createListOfPrime(-2) }
         assertEquals("Count must be >= 2, was -2", exception.message)
     }
 

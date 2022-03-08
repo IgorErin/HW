@@ -3,7 +3,6 @@ import kotlin.math.sqrt
 import kotlin.system.exitProcess
 
 fun createListOfPrime(number: Int): List<Int> {
-
     require(number >= 2) { "Count must be >= 2, was $number" }
 
     val primes: MutableList<Int> = (2..number).toMutableList()
