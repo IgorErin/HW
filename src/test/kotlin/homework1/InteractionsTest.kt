@@ -10,7 +10,7 @@ internal class InteractionsTest {
     @BeforeTest
     fun setup() {
         for (i in 1..5) {
-            filledInStorageForTest.addToEnd(i)
+            interactions(listOf("TTE", "$i"), filledInStorageForTest)
         }
     }
 
@@ -52,7 +52,7 @@ internal class InteractionsTest {
 
     @Test
     fun `test for invalid command`() {
-        assertEquals("numbers: 1, 2, 3, 4, 5", interactions(listOf("MoV", "6ed"), filledInStorageForTest))
+        assertEquals(listOf(1, 2, 3, 4, 5), interactions(listOf("MoV", "6ed"), filledInStorageForTest))
     }
 
     @Test
@@ -75,21 +75,21 @@ internal class InteractionsTest {
 
     @Test
     fun `test for add to end`() {
-        assertEquals("numbers: 1, 2, 3, 4, 5, 6", interactions(listOf("TTE", "6"), filledInStorageForTest))
+        assertEquals(listOf(1, 2, 3, 4, 5, 6), interactions(listOf("TTE", "6"), filledInStorageForTest))
     }
 
     @Test
     fun `test for add to begin`() {
-        assertEquals("numbers: 0, 1, 2, 3, 4, 5", interactions(listOf("TTB", "0"), filledInStorageForTest))
+        assertEquals(listOf(0, 1, 2, 3, 4, 5), interactions(listOf("TTB", "0"), filledInStorageForTest))
     }
 
     @Test
     fun `test fot mov`() {
-        assertEquals("numbers: 1, 3, 4, 2, 5", interactions(listOf("MOV", "1", "3"), filledInStorageForTest))
+        assertEquals(listOf(1, 3, 4, 2, 5), interactions(listOf("MOV", "1", "3"), filledInStorageForTest))
     }
 
     @Test
     fun `test fot revers action`() {
-        assertEquals("numbers: 1, 2, 3, 4", interactions(listOf("REV"), filledInStorageForTest))
+        assertEquals(listOf(1, 2, 3, 4), interactions(listOf("REV"), filledInStorageForTest))
     }
 }
