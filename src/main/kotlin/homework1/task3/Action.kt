@@ -4,9 +4,7 @@ interface Action {
     fun reversAction(listOfNumbers: MutableList<Int>)
 }
 
-class AddToBegin(private val number: Int) : Action {
-    private val numForAdd: Int = number
-
+class AddToBegin(private val numForAdd: Int) : Action {
     override fun doAction(listOfNumbers: MutableList<Int>) {
         listOfNumbers.add(0, numForAdd)
     }
@@ -16,9 +14,7 @@ class AddToBegin(private val number: Int) : Action {
     }
 }
 
-class AddToEnd(private val number: Int) : Action {
-    private val numForAdd: Int = number
-
+class AddToEnd(private val numForAdd: Int) : Action {
     override fun doAction(listOfNumbers: MutableList<Int>) {
         listOfNumbers.add(numForAdd)
     }
