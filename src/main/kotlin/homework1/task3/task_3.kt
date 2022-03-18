@@ -33,14 +33,14 @@ fun interactions(listOfCommand: List<String>, storage: PerformedCommandStorage):
             storage.doAction(Move(listOfCommand[1].toInt(), listOfCommand[2].toInt()))
         }
         Command.PRINT.stringNameOfCommand -> println(
-            storage.returnListOfNumbers().joinToString(separator = ", ", prefix = "numbers: ")
+            storage.numbers.joinToString(separator = ", ", prefix = "numbers: ")
         )
         Command.REVERSE.stringNameOfCommand -> storage.reverseAction()
         else -> {
             println("invalid command, repeat the input")
         }
     }
-    return storage.returnListOfNumbers()
+    return storage.numbers
 }
 
 fun main() {

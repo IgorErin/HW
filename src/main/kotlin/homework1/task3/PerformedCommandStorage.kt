@@ -1,6 +1,8 @@
-class PerformedCommandStorage {
+class PerformedCommandStorage(initListOfNumbers: MutableList<Int> = mutableListOf()) {
     private val actions = mutableListOf<Action>()
-    private val listOfNumbers = mutableListOf<Int>()
+    private val listOfNumbers = initListOfNumbers
+    val numbers: MutableList<Int>
+        get() = listOfNumbers
 
     fun doAction(command: Action) {
         command.doAction(listOfNumbers)
@@ -12,9 +14,5 @@ class PerformedCommandStorage {
         require(actions.isNotEmpty()) { "the stack of completed actions is empty" }
 
         actions.removeLast().reversAction(listOfNumbers)
-    }
-
-    fun returnListOfNumbers(): List<Int> {
-        return listOfNumbers
     }
 }
