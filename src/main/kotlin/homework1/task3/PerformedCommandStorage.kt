@@ -1,7 +1,7 @@
 class PerformedCommandStorage(initListOfNumbers: MutableList<Int> = mutableListOf()) {
     private val actions = mutableListOf<Action>()
     private val listOfNumbers = initListOfNumbers
-    val numbers: MutableList<Int>
+    val numbers: List<Int>
         get() = listOfNumbers
 
     fun doAction(command: Action) {
