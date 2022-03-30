@@ -1,19 +1,27 @@
-
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 
 internal class TreeTest {
     @BeforeEach
-    fun `before all`() {
+    fun `before each`() {
         mapOfInt.clear()
         emptyMapOfInt.clear()
         for (value in 0..10) {
             mapOfInt[listOfIntKeys[value]] = value
         }
     }
+    @Test
+    fun `test for putAll`() {
+        emptyMapForTestPutAll.putAll(filledInMapForTestPutAll)
+        assertEquals(setOf(21, 2, 32, 4, 51, 6, 72, 8, 19, 10, 1), emptyMapForTestPutAll.keys)
+        assertEquals(listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10), emptyMapForTestPutAll.values)
+    }
+
     @ParameterizedTest
     @MethodSource("testValues")
     fun `test for values of map`(mapOfInt: Tree<Int, Int>, values: List<Int>) {
@@ -80,8 +88,18 @@ internal class TreeTest {
     companion object {
         val mapOfInt = Tree<Int, Int>() { a: Int, b: Int -> a - b }
         val emptyMapOfInt = Tree<Int, Int>() { a: Int, b: Int -> a - b }
+        val filledInMapForTestPutAll = Tree<Int, Int>() { a: Int, b: Int -> a - b }
+        val emptyMapForTestPutAll = Tree<Int, Int>() { a: Int, b: Int -> a - b }
 
         var listOfIntKeys = listOf(21, 2, 32, 4, 51, 6, 72, 8, 19, 10, 1)
+
+        @JvmStatic
+        @BeforeAll
+        fun `before all`() {
+            for (index in 0..10) {
+                filledInMapForTestPutAll[listOfIntKeys[index]] = index
+            }
+        }
 
         @JvmStatic
         fun testValues() = listOf(
@@ -131,13 +149,6 @@ internal class TreeTest {
         )
 
         @JvmStatic
-        fun testRemove() = listOf(
-            Arguments.of(0, mapOfInt, 21),
-            Arguments.of(null, mapOfInt, 100),
-            Arguments.of(null, emptyMapOfInt, 1)
-        )
-
-        @JvmStatic
         fun testContainsValue() = listOf(
             Arguments.of(true, mapOfInt, 3),
             Arguments.of(false, mapOfInt, 100),
@@ -148,6 +159,13 @@ internal class TreeTest {
         fun testClear() = listOf(
             Arguments.of(mapOfInt),
             Arguments.of(emptyMapOfInt)
+        )
+
+        @JvmStatic
+        fun testRemove() = listOf(
+            Arguments.of(0, mapOfInt, 21),
+            Arguments.of(null, mapOfInt, 100),
+            Arguments.of(null, emptyMapOfInt, 1)
         )
     }
 }

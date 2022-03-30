@@ -1,4 +1,3 @@
-
 @Suppress("TooManyFunctions", "ReturnCount")
 class Tree<K, V>(val compare: (K, K) -> Int) : MutableMap<K, V> {
     override var size: Int = 0
@@ -11,6 +10,63 @@ class Tree<K, V>(val compare: (K, K) -> Int) : MutableMap<K, V> {
     override val values = mutableListOf<V>()
 
     private var root: Node<K, V>? = null
+
+    override fun containsKey(key: K): Boolean = key in keys
+
+    override fun containsValue(value: V): Boolean = value in values
+
+    override fun get(key: K): V? = searchWithKey(root, key)?.value
+
+    override fun isEmpty(): Boolean = root == null
+
+    override fun clear() {
+        size = 0
+        values.clear()
+        keys.clear()
+        entries.clear()
+        root = null
+    }
+
+    override fun put(key: K, value: V): V? {
+        val valueForReturn = searchWithKey(root, key)?.value
+
+        if (valueForReturn != null) {
+            entries.remove(Entry(valueForReturn, key))
+        }
+
+        root = insert(root, value, key)
+
+        size += 1
+        values.add(value)
+        keys.add(key)
+        entries.add(Entry(value, key))
+
+        return valueForReturn
+    }
+
+    override fun putAll(from: Map<out K, V>) {
+        for (item in from.entries) {
+            root = insert(root, item.value, item.key)
+            size += 1
+            values.add(item.value)
+            keys.add(item.key)
+            entries.add(Entry(item.value, item.key))
+        }
+    }
+
+    override fun remove(key: K): V? {
+        val value = searchWithKey(root, key)?.value
+
+        if (value != null) {
+            entries.remove(Entry(value, key))
+            size -= 1
+            values.remove(value)
+            keys.remove(key)
+            root = removeWithKey(root, key)
+        }
+
+        return value
+    }
 
     private fun leftRightRotate(node: Node<K, V>): Node<K, V> {
         val leftNode = node.left ?: node
@@ -58,17 +114,17 @@ class Tree<K, V>(val compare: (K, K) -> Int) : MutableMap<K, V> {
         node.setHeight()
         var nodeForReturn = node
 
-        when (node.balance()) {
-            HEIGHT_BOUND -> {
-                if ((node.right?.balance() ?: 0) < 0) {
-                    return rightLeftRotate(node)
-                }
+        when {
+            node.balance() == HEIGHT_BOUND && (node.right?.balance() ?: 0) < 0 -> {
+                nodeForReturn = rightLeftRotate(node)
+            }
+            node.balance() == HEIGHT_BOUND -> {
                 nodeForReturn = leftRotate(node)
             }
-            LOWER_BOUND -> {
-                if ((node.left?.balance() ?: 0) > 0) {
-                    return leftRightRotate(node)
-                }
+            node.balance() == LOWER_BOUND && (node.left?.balance() ?: 0) > 0 -> {
+                nodeForReturn = leftRightRotate(node)
+            }
+            node.balance() == LOWER_BOUND -> {
                 nodeForReturn = rightRotate(node)
             }
         }
@@ -97,26 +153,18 @@ class Tree<K, V>(val compare: (K, K) -> Int) : MutableMap<K, V> {
     private fun searchWithKey(node: Node<K, V>?, key: K): Node<K, V>? {
         node ?: return null
 
+        var searchNode = node
+
         when {
             compare(key, node.key) < 0 -> {
-                return searchWithKey(node.left, key)
+                searchNode = searchWithKey(node.left, key)
             }
             compare(key, node.key) > 0 -> {
-                return searchWithKey(node.right, key)
+                searchNode = searchWithKey(node.right, key)
             }
         }
 
-        return node
-    }
-
-    private fun searchWithValue(node: Node<K, V>?, value: V): Boolean {
-        node ?: return false
-
-        if (node.value == value) {
-            return true
-        }
-
-        return searchWithValue(node.left, value) || searchWithValue(node.right, value)
+        return searchNode
     }
 
     private fun removeWithKey(node: Node<K, V>?, key: K): Node<K, V>? {
@@ -129,7 +177,7 @@ class Tree<K, V>(val compare: (K, K) -> Int) : MutableMap<K, V> {
             compare(key, node.key) > 0 -> {
                 node.right = removeWithKey(node.right, key)
             }
-            else -> {
+            compare(key, node.key) == 0 -> {
                 val minNode = findMin(node.right)
 
                 minNode ?: return balance(node.left)
@@ -160,62 +208,6 @@ class Tree<K, V>(val compare: (K, K) -> Int) : MutableMap<K, V> {
         node.left = removeMin(node.left)
 
         return balance(node)
-    }
-
-    override fun containsKey(key: K): Boolean = searchWithKey(root, key) != null
-
-    override fun containsValue(value: V): Boolean {
-        return searchWithValue(root, value)
-    }
-
-    override fun get(key: K): V? {
-        return searchWithKey(root, key)?.value
-    }
-
-    override fun isEmpty(): Boolean = root == null
-
-    override fun clear() {
-        size = 0
-        values.clear()
-        keys.clear()
-        entries.clear()
-        root = null
-    }
-
-    override fun put(key: K, value: V): V? {
-        val valueForReturn = searchWithKey(root, key)?.value
-        root = insert(root, value, key)
-
-        size += 1
-        values.add(value)
-        keys.add(key)
-        entries.add(Entry(value, key))
-
-        return valueForReturn
-    }
-
-    override fun putAll(from: Map<out K, V>) {
-        for (item in from.entries) {
-            root = insert(root, item.value, item.key)
-            size += 1
-            values.add(item.value)
-            keys.add(item.key)
-            entries.add(Entry(item.value, item.key))
-        }
-    }
-
-    override fun remove(key: K): V? {
-        val value = searchWithKey(root, key)?.value
-
-        if (value != null) {
-            entries.remove(Entry(value, key))
-            size -= 1
-            values.remove(value)
-            keys.remove(key)
-            root = removeWithKey(root, key)
-        }
-
-        return value
     }
 
     companion object {
