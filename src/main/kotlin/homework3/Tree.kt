@@ -4,10 +4,22 @@ class Tree<K, V>(val compare: (K, K) -> Int) : MutableMap<K, V> {
         private set
 
     override val entries = mutableSetOf<MutableMap.MutableEntry<K, V>>()
+        get() {
+            val getEntries = field
+            return getEntries;
+        }
 
     override val keys = mutableSetOf<K>()
+        get() {
+            val getKeys = field
+            return getKeys;
+        }
 
     override val values = mutableListOf<V>()
+        get() {
+            val getValue = field
+            return getValue;
+        }
 
     private var root: Node<K, V>? = null
 
