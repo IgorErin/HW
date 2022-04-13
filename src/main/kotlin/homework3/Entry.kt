@@ -1,4 +1,4 @@
-class Entry<K, V>(override var value: V, override val key: K) : MutableMap.MutableEntry<K, V> {
+class Entry<K, V>(override val key: K, override var value: V) : MutableMap.MutableEntry<K, V> {
     override fun setValue(newValue: V): V {
         val previousValue = value
         value = newValue

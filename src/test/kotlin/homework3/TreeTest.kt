@@ -86,10 +86,10 @@ internal class TreeTest {
     }
 
     companion object {
-        val mapOfInt = Tree<Int, Int>() { a: Int, b: Int -> a - b }
-        val emptyMapOfInt = Tree<Int, Int>() { a: Int, b: Int -> a - b }
-        val filledInMapForTestPutAll = Tree<Int, Int>() { a: Int, b: Int -> a - b }
-        val emptyMapForTestPutAll = Tree<Int, Int>() { a: Int, b: Int -> a - b }
+        val mapOfInt = Tree<Int, Int>()
+        val emptyMapOfInt = Tree<Int, Int>()
+        val filledInMapForTestPutAll = Tree<Int, Int>()
+        val emptyMapForTestPutAll = Tree<Int, Int>()
 
         var listOfIntKeys = listOf(21, 2, 32, 4, 51, 6, 72, 8, 19, 10, 1)
 

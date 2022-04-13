@@ -1,29 +1,22 @@
-@Suppress("TooManyFunctions", "ReturnCount")
-class Tree<K, V>(val compare: (K, K) -> Int) : MutableMap<K, V> {
+class Tree<K : Comparable<K>, V> : MutableMap<K, V> {
     override var size: Int = 0
         private set
 
-    override val entries = mutableSetOf<MutableMap.MutableEntry<K, V>>()
-        get() {
-            val getEntries = field
-            return getEntries
-        }
+    override val entries = mutableSetOf<MutableMap.MutableEntry<K, V>>().apply {
+        addAll(collect(root) { node: Node<K, V> -> Entry(node.key, node.value) })
+    }
 
-    override val keys = mutableSetOf<K>()
-        get() {
-            val getKeys = field
-            return getKeys
-        }
+    override val keys = mutableSetOf<K>().apply {
+        addAll(collect(root) { node: Node<K, V> -> node.key })
+    }
 
-    override val values = mutableListOf<V>()
-        get() {
-            val getValue = field
-            return getValue
-        }
+    override val values = mutableListOf<V>().apply {
+        addAll(collect(root) { node: Node<K, V> -> node.value })
+    }
 
     private var root: Node<K, V>? = null
 
-    override fun containsKey(key: K): Boolean = key in keys
+    override fun containsKey(key: K): Boolean = searchWithKey(root, key) !== null
 
     override fun containsValue(value: V): Boolean = value in values
 
@@ -43,7 +36,7 @@ class Tree<K, V>(val compare: (K, K) -> Int) : MutableMap<K, V> {
         val valueForReturn = searchWithKey(root, key)?.value
 
         if (valueForReturn != null) {
-            entries.remove(Entry(valueForReturn, key))
+            entries.remove(Entry(key, valueForReturn))
         }
 
         root = insert(root, value, key)
@@ -51,18 +44,18 @@ class Tree<K, V>(val compare: (K, K) -> Int) : MutableMap<K, V> {
         size += 1
         values.add(value)
         keys.add(key)
-        entries.add(Entry(value, key))
+        entries.add(Entry(key, value))
 
         return valueForReturn
     }
 
     override fun putAll(from: Map<out K, V>) {
-        for (item in from.entries) {
-            root = insert(root, item.value, item.key)
+        from.entries.forEach { entry ->
+            root = insert(root, entry.value, entry.key)
             size += 1
-            values.add(item.value)
-            keys.add(item.key)
-            entries.add(Entry(item.value, item.key))
+            values.add(entry.value)
+            keys.add(entry.key)
+            entries.add(Entry(entry.key, entry.value))
         }
     }
 
@@ -70,7 +63,7 @@ class Tree<K, V>(val compare: (K, K) -> Int) : MutableMap<K, V> {
         val value = searchWithKey(root, key)?.value
 
         if (value != null) {
-            entries.remove(Entry(value, key))
+            entries.remove(Entry(key, value))
             size -= 1
             values.remove(value)
             keys.remove(key)
@@ -80,150 +73,85 @@ class Tree<K, V>(val compare: (K, K) -> Int) : MutableMap<K, V> {
         return value
     }
 
-    private fun leftRightRotate(node: Node<K, V>): Node<K, V> {
-        val leftNode = node.left ?: node
-
-        node.left = leftRotate(leftNode)
-
-        return rightRotate(node)
-    }
-
-    private fun rightLeftRotate(node: Node<K, V>): Node<K, V> {
-        val rightNode = node.right ?: node
-
-        node.right = rightRotate(rightNode)
-
-        return leftRotate(node)
-    }
-
-    private fun rightRotate(node: Node<K, V>): Node<K, V> {
-        val nodeForRotate = node.left ?: return node
-
-        node.left = nodeForRotate.right
-        nodeForRotate.right = node
-
-        node.setHeight()
-        nodeForRotate.setHeight()
-
-        return nodeForRotate
-    }
-
-    private fun leftRotate(node: Node<K, V>): Node<K, V> {
-        val nodeForRotate = node.right ?: return node
-
-        node.right = nodeForRotate.left
-        nodeForRotate.left = node
-
-        node.setHeight()
-        nodeForRotate.setHeight()
-
-        return nodeForRotate
-    }
-
-    private fun balance(node: Node<K, V>?): Node<K, V>? {
-        node ?: return null
-
-        node.setHeight()
-        var nodeForReturn = node
-
-        when {
-            node.balance() == HEIGHT_BOUND && (node.right?.balance() ?: 0) < 0 -> {
-                nodeForReturn = rightLeftRotate(node)
-            }
-            node.balance() == HEIGHT_BOUND -> {
-                nodeForReturn = leftRotate(node)
-            }
-            node.balance() == LOWER_BOUND && (node.left?.balance() ?: 0) > 0 -> {
-                nodeForReturn = leftRightRotate(node)
-            }
-            node.balance() == LOWER_BOUND -> {
-                nodeForReturn = rightRotate(node)
-            }
-        }
-
-        return nodeForReturn
-    }
-
-    private fun insert(node: Node<K, V>?, value: V, key: K): Node<K, V>? {
-        node ?: return Node(key, value)
-
-        when {
-            compare(key, node.key) == 0 -> {
-                node.value = value
-            }
-            compare(key, node.key) > 0 -> {
-                node.right = insert(node.right, value, key)
-            }
-            compare(key, node.key) < 0 -> {
-                node.left = insert(node.left, value, key)
-            }
-        }
-
-        return balance(node)
-    }
-
-    private fun searchWithKey(node: Node<K, V>?, key: K): Node<K, V>? {
-        node ?: return null
-
-        var searchNode = node
-
-        when {
-            compare(key, node.key) < 0 -> {
-                searchNode = searchWithKey(node.left, key)
-            }
-            compare(key, node.key) > 0 -> {
-                searchNode = searchWithKey(node.right, key)
-            }
-        }
-
-        return searchNode
-    }
-
-    private fun removeWithKey(node: Node<K, V>?, key: K): Node<K, V>? {
-        node ?: return null
-
-        when {
-            compare(key, node.key) < 0 -> {
-                node.left = removeWithKey(node.left, key)
-            }
-            compare(key, node.key) > 0 -> {
-                node.right = removeWithKey(node.right, key)
-            }
-            compare(key, node.key) == 0 -> {
-                val minNode = findMin(node.right)
-
-                minNode ?: return balance(node.left)
-
-                minNode.right = removeMin(node.right)
-                minNode.left = node.left
-
-                return balance(minNode)
-            }
-        }
-
-        return balance(node)
-    }
-
-    private fun findMin(node: Node<K, V>?): Node<K, V>? {
-        node ?: return null
-
-        node.left ?: return node
-
-        return findMin(node.left)
-    }
-
-    private fun removeMin(node: Node<K, V>?): Node<K, V>? {
-        node ?: return null
-
-        node.left ?: return node.right
-
-        node.left = removeMin(node.left)
-
-        return balance(node)
+    override fun toString(): String {
+        return visitToString(root)
     }
 
     companion object {
-        const val LOWER_BOUND = -2
-        const val HEIGHT_BOUND = 2
+        fun <K : Comparable<K>, V, T> collect(node: Node<K, V>?, lambda: (Node<K, V>) -> T): Collection<T> {
+            node ?: return mutableListOf()
+
+            val list = mutableListOf(lambda(node))
+            list.addAll(collect(node.right, lambda))
+            list.addAll(collect(node.left, lambda))
+
+            return list
+        }
+
+        private fun <K : Comparable<K>, V> visitToString(node: Node<K, V>?): String {
+            node ?: return "[null]"
+
+            return "{${node.value} : [${visitToString(node.left)}, ${visitToString(node.right)}]}"
+        }
+
+        private fun <K : Comparable<K>, V> insert(node: Node<K, V>?, value: V, key: K): Node<K, V> {
+            node ?: return Node(key, value)
+
+            when {
+                key == node.key -> {
+                    node.value = value
+                }
+                key > node.key -> {
+                    node.right = insert(node.right, value, key)
+                }
+                key < node.key -> {
+                    node.left = insert(node.left, value, key)
+                }
+            }
+
+            return node.balance()
+        }
+
+        private fun <K : Comparable<K>, V> searchWithKey(node: Node<K, V>?, key: K): Node<K, V>? {
+            node ?: return null
+
+            var searchNode = node
+
+            when {
+                key < node.key -> {
+                    searchNode = searchWithKey(node.left, key)
+                }
+                key > node.key -> {
+                    searchNode = searchWithKey(node.right, key)
+                }
+            }
+
+            return searchNode
+        }
+
+        private fun <K : Comparable<K>, V> removeWithKey(node: Node<K, V>?, key: K): Node<K, V>? {
+            return when {
+                node == null -> null
+                key < node.key -> {
+                    node.left = removeWithKey(node.left, key)
+                    node.balance()
+                }
+                key > node.key -> {
+                    node.right = removeWithKey(node.right, key)
+                    node.balance()
+                }
+                key == node.key -> {
+                    val minNode = node.right?.removeMin()
+
+                    minNode ?: return node.left?.balance()
+
+                    minNode.right = node.right
+                    minNode.left = node.left
+
+                    minNode.balance()
+                }
+                else -> node.balance()
+            }
+        }
     }
 }
