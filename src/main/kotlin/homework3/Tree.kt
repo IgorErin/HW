@@ -2,17 +2,16 @@ class Tree<K : Comparable<K>, V> : MutableMap<K, V> {
     override var size: Int = 0
         private set
 
-    override val entries = mutableSetOf<MutableMap.MutableEntry<K, V>>().apply {
-        addAll(collect(root) { node: Node<K, V> -> Entry(node.key, node.value) })
-    }
+    override val entries: MutableSet<MutableMap.MutableEntry<K, V>>
+        get() = mutableSetOf<MutableMap.MutableEntry<K, V>>().apply {
+            addAll(collect(root) { node: Node<K, V> -> Entry(node.key, node.value) })
+        }
 
-    override val keys = mutableSetOf<K>().apply {
-        addAll(collect(root) { node: Node<K, V> -> node.key })
-    }
+    override val keys: MutableSet<K>
+        get() = mutableSetOf<K>().apply { addAll(collect(root) { node: Node<K, V> -> node.key }) }
 
-    override val values = mutableListOf<V>().apply {
-        addAll(collect(root) { node: Node<K, V> -> node.value })
-    }
+    override val values: MutableList<V>
+        get() = mutableListOf<V>().apply { addAll(collect(root) { node: Node<K, V> -> node.value }) }
 
     private var root: Node<K, V>? = null
 
@@ -26,9 +25,6 @@ class Tree<K : Comparable<K>, V> : MutableMap<K, V> {
 
     override fun clear() {
         size = 0
-        values.clear()
-        keys.clear()
-        entries.clear()
         root = null
     }
 
@@ -40,11 +36,7 @@ class Tree<K : Comparable<K>, V> : MutableMap<K, V> {
         }
 
         root = insert(root, value, key)
-
         size += 1
-        values.add(value)
-        keys.add(key)
-        entries.add(Entry(key, value))
 
         return valueForReturn
     }
@@ -53,9 +45,6 @@ class Tree<K : Comparable<K>, V> : MutableMap<K, V> {
         from.entries.forEach { entry ->
             root = insert(root, entry.value, entry.key)
             size += 1
-            values.add(entry.value)
-            keys.add(entry.key)
-            entries.add(Entry(entry.key, entry.value))
         }
     }
 
@@ -63,10 +52,7 @@ class Tree<K : Comparable<K>, V> : MutableMap<K, V> {
         val value = searchWithKey(root, key)?.value
 
         if (value != null) {
-            entries.remove(Entry(key, value))
             size -= 1
-            values.remove(value)
-            keys.remove(key)
             root = removeWithKey(root, key)
         }
 

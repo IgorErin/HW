@@ -1,5 +1,4 @@
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -13,19 +12,21 @@ internal class TreeTest {
         emptyMapOfInt.clear()
         for (value in 0..10) {
             mapOfInt[listOfIntKeys[value]] = value
+            filledInMapForTestPutAll[listOfIntKeys[value]] = value
         }
     }
+
     @Test
     fun `test for putAll`() {
         emptyMapForTestPutAll.putAll(filledInMapForTestPutAll)
         assertEquals(setOf(21, 2, 32, 4, 51, 6, 72, 8, 19, 10, 1), emptyMapForTestPutAll.keys)
-        assertEquals(listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10), emptyMapForTestPutAll.values)
+        assertEquals(setOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10), emptyMapForTestPutAll.values.toSet())
     }
 
     @ParameterizedTest
     @MethodSource("testValues")
-    fun `test for values of map`(mapOfInt: Tree<Int, Int>, values: List<Int>) {
-        assertEquals(values, mapOfInt.values)
+    fun `test for values of map`(mapOfInt: Tree<Int, Int>, values: Set<Int>) {
+        assertEquals(values, mapOfInt.values.toSet())
     }
 
     @ParameterizedTest
@@ -94,17 +95,9 @@ internal class TreeTest {
         var listOfIntKeys = listOf(21, 2, 32, 4, 51, 6, 72, 8, 19, 10, 1)
 
         @JvmStatic
-        @BeforeAll
-        fun `before all`() {
-            for (index in 0..10) {
-                filledInMapForTestPutAll[listOfIntKeys[index]] = index
-            }
-        }
-
-        @JvmStatic
         fun testValues() = listOf(
-            Arguments.of(mapOfInt, listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)),
-            Arguments.of(emptyMapOfInt, listOf<Int>())
+            Arguments.of(mapOfInt, setOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)),
+            Arguments.of(emptyMapOfInt, setOf<Int>())
         )
 
         @JvmStatic
