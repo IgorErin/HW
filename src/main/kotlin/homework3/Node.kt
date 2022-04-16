@@ -52,6 +52,12 @@ class Node<K, V>(val key: K, var value: V) {
         return nodeForRotate
     }
 
+    fun findMin(): Node<K, V>? {
+        left ?: return this
+
+        return left?.findMin()
+    }
+
     fun removeMin(): Node<K, V>? {
         left ?: return right
 
@@ -76,6 +82,8 @@ class Node<K, V>(val key: K, var value: V) {
             else -> this
         }
     }
+
+    override fun toString(): String = "$key : $value [$left, $right]"
 
     companion object {
         const val CRITICAL_UPPER_HEIGHT = 2

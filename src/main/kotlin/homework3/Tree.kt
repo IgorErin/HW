@@ -4,14 +4,14 @@ class Tree<K : Comparable<K>, V> : MutableMap<K, V> {
 
     override val entries: MutableSet<MutableMap.MutableEntry<K, V>>
         get() = mutableSetOf<MutableMap.MutableEntry<K, V>>().apply {
-            addAll(collect(root) { node: Node<K, V> -> Entry(node.key, node.value) })
+            addAll(map(root) { node: Node<K, V> -> Entry(node.key, node.value) })
         }
 
     override val keys: MutableSet<K>
-        get() = mutableSetOf<K>().apply { addAll(collect(root) { node: Node<K, V> -> node.key }) }
+        get() = mutableSetOf<K>().apply { addAll(map(root) { node: Node<K, V> -> node.key }) }
 
     override val values: MutableList<V>
-        get() = mutableListOf<V>().apply { addAll(collect(root) { node: Node<K, V> -> node.value }) }
+        get() = mutableListOf<V>().apply { addAll(map(root) { node: Node<K, V> -> node.value }) }
 
     private var root: Node<K, V>? = null
 
@@ -30,10 +30,6 @@ class Tree<K : Comparable<K>, V> : MutableMap<K, V> {
 
     override fun put(key: K, value: V): V? {
         val valueForReturn = searchWithKey(root, key)?.value
-
-        if (valueForReturn != null) {
-            entries.remove(Entry(key, valueForReturn))
-        }
 
         root = insert(root, value, key)
         size += 1
@@ -60,24 +56,18 @@ class Tree<K : Comparable<K>, V> : MutableMap<K, V> {
     }
 
     override fun toString(): String {
-        return visitToString(root)
+        return root.toString()
     }
 
     companion object {
-        fun <K : Comparable<K>, V, T> collect(node: Node<K, V>?, lambda: (Node<K, V>) -> T): Collection<T> {
+        fun <K : Comparable<K>, V, T> map(node: Node<K, V>?, lambda: (Node<K, V>) -> T): Collection<T> {
             node ?: return mutableListOf()
 
             val list = mutableListOf(lambda(node))
-            list.addAll(collect(node.right, lambda))
-            list.addAll(collect(node.left, lambda))
+            list.addAll(map(node.right, lambda))
+            list.addAll(map(node.left, lambda))
 
             return list
-        }
-
-        private fun <K : Comparable<K>, V> visitToString(node: Node<K, V>?): String {
-            node ?: return "[null]"
-
-            return "{${node.value} : [${visitToString(node.left)}, ${visitToString(node.right)}]}"
         }
 
         private fun <K : Comparable<K>, V> insert(node: Node<K, V>?, value: V, key: K): Node<K, V> {
@@ -127,11 +117,10 @@ class Tree<K : Comparable<K>, V> : MutableMap<K, V> {
                     node.balance()
                 }
                 key == node.key -> {
-                    val minNode = node.right?.removeMin()
+                    val minNode = node.right?.findMin()
+                    minNode ?: return node.left
 
-                    minNode ?: return node.left?.balance()
-
-                    minNode.right = node.right
+                    minNode.right = node.right?.removeMin()
                     minNode.left = node.left
 
                     minNode.balance()
