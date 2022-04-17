@@ -21,7 +21,7 @@ class Tree<K : Comparable<K>, V> : MutableMap<K, V> {
 
     override fun get(key: K): V? = searchWithKey(root, key)?.value
 
-    override fun isEmpty(): Boolean = root == null
+    override fun isEmpty(): Boolean = size == 0
 
     override fun clear() {
         size = 0
@@ -91,18 +91,15 @@ class Tree<K : Comparable<K>, V> : MutableMap<K, V> {
         private fun <K : Comparable<K>, V> searchWithKey(node: Node<K, V>?, key: K): Node<K, V>? {
             node ?: return null
 
-            var searchNode = node
-
-            when {
+            return when {
                 key < node.key -> {
-                    searchNode = searchWithKey(node.left, key)
+                    searchWithKey(node.left, key)
                 }
                 key > node.key -> {
-                    searchNode = searchWithKey(node.right, key)
+                    searchWithKey(node.right, key)
                 }
+                else -> node
             }
-
-            return searchNode
         }
 
         private fun <K : Comparable<K>, V> removeWithKey(node: Node<K, V>?, key: K): Node<K, V>? {

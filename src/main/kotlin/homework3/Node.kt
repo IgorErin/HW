@@ -74,10 +74,18 @@ class Node<K, V>(val key: K, var value: V) {
 
         return when (this.balance) {
             CRITICAL_UPPER_HEIGHT -> {
-                if (rightNodeBalance < 0) this.rightLeftRotate() else this.leftRotate()
+                if (rightNodeBalance < 0) {
+                    this.rightLeftRotate()
+                }else {
+                    this.leftRotate()
+                }
             }
             CRITICAL_LOWER_HEIGHT -> {
-                if (leftNodeBalance > 0) this.leftRightRotate() else this.rightRotate()
+                if (leftNodeBalance > 0) {
+                    this.leftRightRotate()
+                } else {
+                    this.rightRotate()
+                }
             }
             else -> this
         }
