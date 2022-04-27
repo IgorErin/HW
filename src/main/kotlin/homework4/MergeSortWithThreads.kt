@@ -1,6 +1,5 @@
-package homework4
 
-class SortWithThreads<T : Comparable<T>> (private val sourceList: MutableList<T>) : MergeSort<T> {
+class MergeSortWithThreads<T : Comparable<T>> (private val sourceList: MutableList<T>) : MergeSort<T> {
     override fun sort(numberOfThreads: Int): MutableList<T> {
         return addThread(sourceList, numberOfThreads)
     }
@@ -49,7 +48,7 @@ class SortWithThreads<T : Comparable<T>> (private val sourceList: MutableList<T>
         val firstSubList = list.subList(0, list.size / 2)
         val secondSubList = list.subList(list.size / 2, list.size)
 
-        when {
+        return when {
             list.size > 1 && number > 0 -> {
                 val firstThread = SortThread(firstSubList, number)
                 firstThread.start()
@@ -57,21 +56,19 @@ class SortWithThreads<T : Comparable<T>> (private val sourceList: MutableList<T>
                 val secondList = addThread(secondSubList, number - 1)
                 firstThread.join()
 
-                return merge(firstThread.list, secondList)
+                merge(firstThread.list, secondList)
             }
             list.size > 1 -> {
                 val firstList = singleThreadSort(firstSubList)
                 val secondList = singleThreadSort(secondSubList)
 
-                return merge(firstList, secondList)
+                merge(firstList, secondList)
             }
-            else -> {
-                return list
-            }
+            else -> list
         }
     }
 
-   inner class SortThread(var list: MutableList<T>, private val number: Int) : Thread() {
+    private inner class SortThread(var list: MutableList<T>, val number: Int) : Thread() {
         override fun run() {
             list = addThread(list, number - 1)
         }
