@@ -1,4 +1,3 @@
-
 interface MergeSort<T : Comparable<T>> {
-    fun sort(numberOfThreads: Int): MutableList<T>
+    fun sort(sourceList: MutableList<T>, numberOfThreads: Int): MutableList<T>
 }

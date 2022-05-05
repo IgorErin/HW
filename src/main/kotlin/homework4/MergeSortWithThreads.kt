@@ -1,6 +1,6 @@
 
-class MergeSortWithThreads<T : Comparable<T>> (private val sourceList: MutableList<T>) : MergeSort<T> {
-    override fun sort(numberOfThreads: Int): MutableList<T> {
+class MergeSortWithThreads<T : Comparable<T>> : MergeSort<T> {
+    override fun sort(sourceList: MutableList<T>, numberOfThreads: Int): MutableList<T> {
         return addThread(sourceList, numberOfThreads)
     }
 
