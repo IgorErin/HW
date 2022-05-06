@@ -1,4 +1,3 @@
-
 class MergeSortWithThreads<T : Comparable<T>> : MergeSort<T> {
     override fun sort(sourceList: MutableList<T>, numberOfThreads: Int): MutableList<T> {
         return addThread(sourceList, numberOfThreads)

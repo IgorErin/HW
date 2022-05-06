@@ -3,24 +3,24 @@ import jetbrains.letsPlot.geom.geomPoint
 import jetbrains.letsPlot.ggplot
 import kotlin.random.Random
 
-const val HIGHER_BOUND_OF_POW = 9
-const val HIGHER_BOUND_OF_SIZE_POW = 7
-const val DEFAULT_SIZE = 1000
-const val DELTA_SIZE = 250000
+const val HIGH_BOUND_OF_THREADS = 9
+const val HIGH_BOUND_OF_SIZE_POW = 7
+const val DEFAULT_SIZE_OF_LIST = 1000
+const val DELTA_SIZE_OF_LIST = 250000
 const val HIGH_BOUND_OF_RANDOM_NUMBERS = 100000
 const val SIZE_OF_LABELS_LIST = 70
 const val MEMBERS_COUNT = 10
 
 fun main() {
     val a = MergeSortWithThreads<Int>()
-    var size = DEFAULT_SIZE
+    var size = DEFAULT_SIZE_OF_LIST
     val timeCount = mutableListOf<Int>()
     val sizeCount = mutableListOf<Int>()
 
-    repeat(HIGHER_BOUND_OF_SIZE_POW) {
+    repeat(HIGH_BOUND_OF_SIZE_POW) {
         val list = MutableList(size) { Random.nextInt(0, HIGH_BOUND_OF_RANDOM_NUMBERS) }
 
-        for (i in 0..HIGHER_BOUND_OF_POW) {
+        for (i in 0..HIGH_BOUND_OF_THREADS) {
 
             val startTime = System.currentTimeMillis()
             println(a.sort(list, i))
@@ -30,7 +30,7 @@ fun main() {
             sizeCount.add(size)
         }
 
-        size += DELTA_SIZE
+        size += DELTA_SIZE_OF_LIST
     }
 
     val data = mapOf<String, Any>(
