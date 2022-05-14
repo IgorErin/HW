@@ -1,6 +1,7 @@
 import jetbrains.letsPlot.geom.geomLine
 import jetbrains.letsPlot.geom.geomPoint
 import jetbrains.letsPlot.ggplot
+import kotlin.math.pow
 import kotlin.random.Random
 
 const val HIGH_BOUND_OF_THREADS = 9
@@ -10,6 +11,10 @@ const val DELTA_SIZE_OF_LIST = 250000
 const val HIGH_BOUND_OF_RANDOM_NUMBERS = 100000
 const val SIZE_OF_LABELS_LIST = 70
 const val MEMBERS_COUNT = 10
+
+fun Int.pow(number: Int): Int {
+    return this.toDouble().pow(number).toInt()
+}
 
 fun main() {
     val a = MergeSortWithThreads<Int>()
@@ -21,9 +26,8 @@ fun main() {
         val list = MutableList(size) { Random.nextInt(0, HIGH_BOUND_OF_RANDOM_NUMBERS) }
 
         for (i in 0..HIGH_BOUND_OF_THREADS) {
-
             val startTime = System.currentTimeMillis()
-            println(a.sort(list, i))
+            a.sort(list, i)
             val totalTime = System.currentTimeMillis() - startTime
 
             timeCount.add(totalTime.toInt())
@@ -37,12 +41,12 @@ fun main() {
         "time" to timeCount,
         "size" to sizeCount,
         "threadsCount" to List(SIZE_OF_LABELS_LIST) {
-                index -> listOf("1", "2", "4", "8", "16", "32", "64", "128", "256", "512")[index % MEMBERS_COUNT]
+                index -> 2.pow(index % MEMBERS_COUNT).toString()
         }
     )
 
     val plots = mapOf(
-        "NumberOfThreads" to ggplot(data) + geomLine { x = "size"; y = "time"; color = "threadsCount" } + geomPoint(),
+        "NumberOfThreads" to ggplot(data) + geomLine { x = "size"; y = "time"; color = "threadsCount" } + geomPoint()
     )
 
     Drawer().draw(plots)

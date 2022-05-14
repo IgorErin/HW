@@ -49,7 +49,6 @@ class Drawer {
             // Plot selector
             val plotButtonGroup = ButtonGroup()
             for (key in plots.keys) {
-                println("keys: $key")
                 plotButtonGroup.add(
                     JRadioButton(key, key == selectedPlotKey).apply {
                         addActionListener {
