@@ -17,7 +17,7 @@ fun Int.pow(number: Int): Int {
 }
 
 fun main() {
-    val a = MergeSortWithThreads<Int>()
+    val sortClass = MergeSortWithThreads<Int>()
     var size = DEFAULT_SIZE_OF_LIST
     val timeCount = mutableListOf<Int>()
     val sizeCount = mutableListOf<Int>()
@@ -27,7 +27,7 @@ fun main() {
 
         for (i in 0..HIGH_BOUND_OF_THREADS) {
             val startTime = System.currentTimeMillis()
-            a.sort(list, i)
+            sortClass.sort(list, i)
             val totalTime = System.currentTimeMillis() - startTime
 
             timeCount.add(totalTime.toInt())
