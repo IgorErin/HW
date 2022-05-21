@@ -19,7 +19,7 @@ class Drawer {
             false
         )
 
-        val window = JFrame("name")
+        val window = JFrame("Sort test")
         window.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
         window.contentPane.layout = BoxLayout(window.contentPane, BoxLayout.Y_AXIS)
 

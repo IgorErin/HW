@@ -28,6 +28,8 @@ fun getJavaFXPlatform(): String {
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+
     implementation("org.slf4j:slf4j-simple:1.7.36")
 
     implementation("org.openjfx:javafx-base:$jfxVersion:${getJavaFXPlatform()}")
