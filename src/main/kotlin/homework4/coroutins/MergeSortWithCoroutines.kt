@@ -16,9 +16,11 @@ class MergeSortWithCoroutines<T : Comparable<T>> : MergeSort<T>() {
                 val firstResult = async {
                     addCoroutine(firstSubList, number - 1)
                 }
-                val secondResult = addCoroutine(secondSubList, number - 1)
+                val secondResult = async {
+                    addCoroutine(secondSubList, number - 1)
+                }
 
-                merge(firstResult.await(), secondResult)
+                merge(firstResult.await(), secondResult.await())
             }
             list.size > 1 -> {
                 val firstList = singleThreadSort(firstSubList)

@@ -4,10 +4,6 @@ import jetbrains.letsPlot.ggplot
 import kotlin.math.pow
 import kotlin.random.Random
 
-fun Int.pow(number: Int): Int {
-    return this.toDouble().pow(number).toInt()
-}
-
 class Tester(private val sortClass: MergeSort<Int>) {
     fun test() {
         var size = DEFAULT_SIZE_OF_LIST
@@ -48,6 +44,10 @@ class Tester(private val sortClass: MergeSort<Int>) {
         )
 
         Drawer().draw(plots)
+    }
+
+    private fun Int.pow(number: Int): Int {
+        return this.toDouble().pow(number).toInt()
     }
 
     companion object {
