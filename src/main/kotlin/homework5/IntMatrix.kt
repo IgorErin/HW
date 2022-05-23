@@ -45,10 +45,10 @@ class IntMatrix(private val matrix: List<List<Int>>) {
             resultsMatrix.add(results)
         }
 
-        return@runBlocking resultsMatrix.await()
+        return@runBlocking IntMatrix(resultsMatrix.await())
     }
 
-    private suspend fun MutableList<List<Deferred<Int>>>.await(): IntMatrix {
+    private suspend fun MutableList<List<Deferred<Int>>>.await(): MutableList<List<Int>> {
         val newMatrixList = mutableListOf<List<Int>>()
 
         for (lineIndex in 0 until this.size) {
@@ -60,7 +60,7 @@ class IntMatrix(private val matrix: List<List<Int>>) {
             newMatrixList.add(sublist)
         }
 
-        return IntMatrix(newMatrixList)
+        return newMatrixList
     }
 
     private fun multiplyLines(line: List<Int>, column: List<Int>): Int {
