@@ -11,8 +11,8 @@ fun zeroIntMatrix(height: Int, width: Int ): IntMatrix {
 }
 
 class IntMatrix(private val matrix: List<List<Int>>) {
-    val height: Int
-    val width: Int
+    private val height: Int
+    private val width: Int
 
     init {
         require(matrix.isMatrix()) {
@@ -83,7 +83,7 @@ class IntMatrix(private val matrix: List<List<Int>>) {
 
     fun List<List<Int>>.getLine(lineIndex: Int): List<Int> {
         println("matrix $matrix")
-        return matrix.map{ println(it[lineIndex])
+        return this.map{ println(it[lineIndex])
             it[lineIndex]
         }
     }
