@@ -90,7 +90,7 @@ class Drawer {
     }
 
     companion object {
-        const val WIDTH = 850
-        const val HEIGHT = 400
+        const val WIDTH = 1700
+        const val HEIGHT = 800
     }
 }

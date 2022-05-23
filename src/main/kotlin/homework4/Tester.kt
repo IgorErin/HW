@@ -5,7 +5,7 @@ import kotlin.math.pow
 import kotlin.random.Random
 
 class Tester(private val sortClass: MergeSort<Int>) {
-    fun test() {
+    fun test(testName: String) {
         var size = DEFAULT_SIZE_OF_LIST
         val timeCount = mutableListOf<Int>()
         val sizeCount = mutableListOf<Int>()
@@ -17,7 +17,7 @@ class Tester(private val sortClass: MergeSort<Int>) {
 
             for (i in 0..HIGH_BOUND_OF_THREADS) {
                 val startTime = System.currentTimeMillis()
-                sortClass.sort(list, i)
+                println(sortClass.sort(list, i))
                 val totalTime = System.currentTimeMillis() - startTime
 
                 timeCount.add(totalTime.toInt())
@@ -32,14 +32,14 @@ class Tester(private val sortClass: MergeSort<Int>) {
         val data = mapOf<String, Any>(
             "nanoTime" to timeCount,
             "size" to sizeCount,
-            "threadsCount" to List(SIZE_OF_LABELS_LIST) {
+            "$testName count" to List(SIZE_OF_LABELS_LIST) {
                     index -> 2.pow(index % PLOT_MEMBERS_COUNT).toString()
             }
         )
 
         val plots = mapOf(
-            "NumberOfThreads" to ggplot(data) + geomLine {
-                x = "size"; y = "nanoTime"; color = "threadsCount"
+            "$testName test" to ggplot(data) + geomLine {
+                x = "size"; y = "nanoTime"; color = "$testName count"
             } + geomPoint()
         )
 

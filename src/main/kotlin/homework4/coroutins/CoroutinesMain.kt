@@ -1,4 +1,4 @@
 
 fun main() {
-    Tester(MergeSortWithCoroutines()).test()
+    Tester(MergeSortWithCoroutines()).test("coroutines")
 }
