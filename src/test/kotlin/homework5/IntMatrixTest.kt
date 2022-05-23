@@ -8,7 +8,7 @@ internal class IntMatrixTest {
     @ParameterizedTest
     @MethodSource("correctProduct")
     fun `correct product`(correctMatrix: IntMatrix, leftMatrix: IntMatrix, rightMatrix: IntMatrix) {
-        assertEquals(true, correctMatrix == leftMatrix * rightMatrix)
+        assertEquals(correctMatrix, leftMatrix * rightMatrix)
     }
 
     @ParameterizedTest
