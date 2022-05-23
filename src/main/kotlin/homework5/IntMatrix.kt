@@ -84,7 +84,11 @@ class IntMatrix(private val matrix: List<List<Int>>) {
         return false
     }
 
-    override fun equals(other: Any?): Boolean = this.toString() == other.toString()
+    override fun equals(other: Any?): Boolean {
+        val otherMatrix = other as? IntMatrix ?: return false
+
+        return otherMatrix.matrix == matrix
+    }
 
     override fun hashCode(): Int {
         return super.hashCode()
