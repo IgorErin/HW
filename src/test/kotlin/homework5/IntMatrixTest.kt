@@ -1,4 +1,4 @@
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -51,8 +51,8 @@ internal class IntMatrixTest {
         @JvmStatic
         fun incorrectProduct() = listOf(
             Arguments.of(secondMatrix, firstMatrix, "", ""),
-            Arguments.of(secondMatrix, idIntMatrix(1, 1), "2", "1"),
-            Arguments.of(zeroIntMatrix(1, 2), idIntMatrix(1, 2), "1", "2")
+            Arguments.of(secondMatrix, idIntMatrix(1, 1)),
+            Arguments.of(zeroIntMatrix(1, 2), idIntMatrix(1, 2))
         )
     }
 }

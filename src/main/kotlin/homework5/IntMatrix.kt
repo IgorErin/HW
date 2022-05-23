@@ -21,13 +21,13 @@ class IntMatrix(private val matrix: List<List<Int>>) {
     }
 
     private fun getColumn(columnIndex: Int): List<Int> {
-        return this.matrix.map{
+        return this.matrix.map {
             it[columnIndex]
         }
     }
 
     operator fun times(other: IntMatrix): IntMatrix = runBlocking {
-        require(width == other.height) {"not multiplied matrix, different dimension" }
+        require(width == other.height) { "not multiplied matrix, different dimension" }
 
         val resultsMatrix = mutableListOf<List<Deferred<Int>>>()
 
@@ -85,6 +85,10 @@ class IntMatrix(private val matrix: List<List<Int>>) {
     }
 
     override fun equals(other: Any?): Boolean = this.toString() == other.toString()
+
+    override fun hashCode(): Int {
+        return super.hashCode()
+    }
 
     override fun toString(): String {
         return matrix.toString()
