@@ -14,15 +14,15 @@ import compose.view.items.FieldItem
 
 @Composable
 fun GameScreen(
-    gameVariant: GameVariant,
+    gameVariant: GameVariant?,
     fields: List<Field>,
     onFieldSelect: (Int) -> Unit,
 ) = Box(contentAlignment = Alignment.Center,) { //TODO()
-    Box() {
+    Box {
         Column() {
             Text(
                 buildAnnotatedString {
-                    append(gameVariant.name)
+                    append(gameVariant?.toString() ?: TODO())
                     withStyle(style = SpanStyle(color = androidx.compose.ui.graphics.Color.LightGray)) {}
                 }
             )

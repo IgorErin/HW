@@ -21,7 +21,7 @@ internal fun FieldItem(
         Text(
             buildAnnotatedString {
                 append("${field.state}")
-                withStyle(style = SpanStyle(color = androidx.compose.ui.graphics.Color.Companion.LightGray)) {}  //TODO()
+                withStyle(style = SpanStyle(color = androidx.compose.ui.graphics.Color.Companion.Black)) {}  //TODO()
             },
             modifier = Modifier.padding(10.dp)
         )
