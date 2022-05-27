@@ -1,4 +1,4 @@
 
 fun main() {
-    Tester(MergeSortWithThreads()).test("threads")
+    Tester(MergeSortWithThreads(), "threads").test()
 }

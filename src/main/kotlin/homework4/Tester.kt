@@ -4,8 +4,8 @@ import jetbrains.letsPlot.ggplot
 import kotlin.math.pow
 import kotlin.random.Random
 
-class Tester(private val sortClass: MergeSort<Int>) {
-    fun test(testName: String) {
+class Tester(private val sortClass: MergeSort<Int>, private val testName: String) {
+    fun test() {
         var size = DEFAULT_SIZE_OF_LIST
         val timeCount = mutableListOf<Int>()
         val sizeCount = mutableListOf<Int>()
@@ -17,7 +17,7 @@ class Tester(private val sortClass: MergeSort<Int>) {
 
             for (i in 0..HIGH_BOUND_OF_THREADS) {
                 val startTime = System.currentTimeMillis()
-                println(sortClass.sort(list, i))
+                sortClass.sort(list, i)
                 val totalTime = System.currentTimeMillis() - startTime
 
                 timeCount.add(totalTime.toInt())
