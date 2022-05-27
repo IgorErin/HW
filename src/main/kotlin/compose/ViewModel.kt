@@ -45,11 +45,11 @@ class ViewModel {
     }
 
     fun onGameSelect(value: GameVariant) = updateState {
-        copy(gameVariant = value, screen = Screen.GameScreen)
+        copy(gameVariant = value, screen = changeScreen()) //TODO()
     }
 
     fun onSideSelect(value: Side) = updateState {
-        TODO()
+        copy(side = value, screen = changeScreen()) //TODO()
     }
 
 }

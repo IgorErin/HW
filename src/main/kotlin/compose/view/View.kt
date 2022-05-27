@@ -10,8 +10,6 @@ import compose.view.screen.StartScreen
 @Composable
 fun View(viewModel: ViewModel) {
     val state = viewModel.state
-    val games = viewModel.games
-    val sides = viewModel.sides
 
     MaterialTheme {
         when(state.screen) {

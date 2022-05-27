@@ -48,6 +48,5 @@ fun StartScreen(
                 )
             }
         }
-
     }
 }
