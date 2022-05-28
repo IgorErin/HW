@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import compose.Field
 import compose.GameVariant
@@ -19,25 +20,31 @@ import compose.view.items.FieldItem
 @Composable
 fun GameScreen(
     isWin: Boolean,
+    gameOver: Boolean,
     fields: Array<Array<Field>>,
     onFieldSelect: (Int, Int) -> Unit,
+    onOneMoreGame: () -> Unit
 ) = Box(
     contentAlignment = Alignment.Center,
     modifier = Modifier.fillMaxSize()
 ) {
     GeneralField(fields, onFieldSelect)
 
-    if (isWin) {
+    if (gameOver) {
         AlertDialog(
-            onDismissRequest = {
-            },
-            title = { Text(text = "Подтверждение действия") },
-            text = { Text("Вы действительно хотите удалить выбранный элемент?") },
+            onDismissRequest = {},
+            title = { Text(text = winLooseTitle(isWin)) },
+            text = { Text(text = winLooseMessage(isWin)) },
             buttons = {
-                Button(
-                    onClick = {  }
+                Row(
+                    modifier = Modifier.padding(all = 8.dp),
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    Text("OK", fontSize = 22.sp)
+                    Button(
+                        onClick = { onOneMoreGame() }
+                    ) {
+                        Text("Menu", fontSize = 22.sp)
+                    }
                 }
             }
         )
@@ -60,3 +67,18 @@ fun GeneralField(fields: Array<Array<Field>>, onFieldSelect: (Int, Int) -> Unit)
     }
 }
 
+fun winLooseMessage(isWin: Boolean): String {
+    if (isWin) {
+        return "Congratulations !!! Luck is on your side play one more game"
+    }
+
+    return "Do not be upset, luck will smile at you in the next game !"
+}
+
+fun winLooseTitle(isWin: Boolean): String {
+    if (isWin) {
+        return "You win"
+    }
+
+    return "You lost"
+}

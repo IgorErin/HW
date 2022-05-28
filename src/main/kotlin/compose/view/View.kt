@@ -6,7 +6,6 @@ import compose.Screen
 import compose.ViewModel
 import compose.view.screen.GameScreen
 import compose.view.screen.StartScreen
-import compose.view.screen.WinScreen
 
 @Composable
 fun View(viewModel: ViewModel) {
@@ -24,15 +23,10 @@ fun View(viewModel: ViewModel) {
             }
             Screen.GameScreen -> {
                 GameScreen(
+                    state.isWin, //TODO()
                     state.isWin,
                     state.fields,
-                    viewModel::onFieldSelect
-                )
-            }
-            Screen.WinScreen -> {
-                WinScreen(
-                    state.gameVariant ?: TODO(),
-                    state.side == state.nextFieldState, //TODO()
+                    viewModel::onFieldSelect,
                     viewModel::onBackClick
                 )
             }

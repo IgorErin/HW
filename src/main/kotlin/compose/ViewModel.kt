@@ -44,12 +44,8 @@ class ViewModel {
     fun onFieldSelect(firstIndex: Int, secondIndex: Int) {
         val newFields = state.fields.changeFields(firstIndex, secondIndex, state.nextFieldState)
 
-        /*if (fieldsCheck(newFields)) {
-            return updateState { copy(screen = Screen.WinScreen) }
-        }*/
-
         return updateState {
-            copy( nextFieldState = nextMove(nextFieldState), fields = newFields, isWin = fieldsCheck(fields))
+            copy(nextFieldState = nextMove(nextFieldState), fields = newFields, isWin = fieldsCheck(fields))
         }
     }
 
