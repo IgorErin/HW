@@ -71,8 +71,8 @@ private fun checkSubArray(fields: Array<Field>): Boolean {
     val firstState = fields[0].state ?: return false
 
     return when {
-        fields.count { it.state == firstState } == 1 -> false
-        else -> true
+        fields.count { it.state == firstState } == 3 -> true
+        else -> false
     }
 }
 
