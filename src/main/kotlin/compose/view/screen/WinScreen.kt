@@ -5,22 +5,16 @@ import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.dp
-import compose.Field
 import compose.GameVariant
-import compose.view.items.FieldItem
+
 
 @Composable
 fun WinScreen(
+    gameVariant: GameVariant,
     playerIsWin: Boolean,
     onBackClick: ()-> Unit,
 ) = Box(
@@ -30,7 +24,7 @@ fun WinScreen(
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
+        verticalArrangement = Arrangement.SpaceAround
     ) {
         Text("message")
 
@@ -39,4 +33,3 @@ fun WinScreen(
         }
     }
 }
-

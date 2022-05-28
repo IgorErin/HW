@@ -1,19 +1,15 @@
 package compose
 
-data class Field(var state: GameFiledState?, val id: Int)
+data class Field(var state: GameState?, val firstIndex: Int, val secondIndex: Int)
 
 enum class Screen {
     StartScreen, GameScreen, WinScreen
 }
 
-enum class GameFiledState {
-    Cross, Zero, Empty
+enum class GameState {
+    Cross, Zero
 }
 
 enum class GameVariant {
     EasyBot, HardBot, Single
-}
-
-enum class Side {
-    Cross, Zero
 }

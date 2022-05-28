@@ -14,7 +14,7 @@ class ViewModel {
             return fetchGames()
         }
 
-    val sides: List<Side>
+    val sides: List<GameState>
         get() {
             return fetchSides()
         }
@@ -22,16 +22,16 @@ class ViewModel {
     data class State(
         var screen: Screen,
         var gameVariant: GameVariant?,
-        val fields: List<Field>,
-        var nextFieldState: GameFiledState,
-        var side: Side?
+        val fields: Array<Array<Field>>,
+        var nextFieldState: GameState,
+        var side: GameState?
     )
 
     private fun initialState(): State = State(
         Screen.StartScreen,
         null,
         fetchFields(),
-        GameFiledState.Cross,
+        GameState.Cross,
         null
     )
 
@@ -39,8 +39,9 @@ class ViewModel {
         state = state.update()
     }
 
-    fun onFieldSelect(id: Int) {
-        val newFields = state.fields.changeFields(id, state.nextFieldState)
+    fun onFieldSelect(firstIndex: Int, secondIndex: Int) {
+        println("$firstIndex, $secondIndex")
+        val newFields = state.fields.changeFields(firstIndex, secondIndex, state.nextFieldState)
         //return updateState { copy(fields = fields.changeFields(id, nextFieldState)) }
         if (fieldsCheck(newFields)) {
             return updateState { copy(screen = Screen.WinScreen) }
@@ -53,7 +54,7 @@ class ViewModel {
         copy(gameVariant = value, screen = changeStartScreenToGameScreen(value, state.side))
     }
 
-    fun onSideSelect(value: Side) = updateState {
+    fun onSideSelect(value: GameState) = updateState {
         copy(side = value, screen = changeStartScreenToGameScreen(state.gameVariant, value))
     }
 

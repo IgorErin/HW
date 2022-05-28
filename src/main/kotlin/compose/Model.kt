@@ -1,12 +1,16 @@
 package compose
 
-fun fetchFields(): List<Field> = List(9) { Field(GameFiledState.Empty, it) }
+fun fetchFields(): Array<Array<Field>> = Array(3) { firstIndex ->
+    Array(3) { secondIndex ->
+        Field(null, firstIndex, secondIndex)
+    }
+}
 
 fun fetchGames(): List<GameVariant> = listOf(GameVariant.EasyBot, GameVariant.HardBot, GameVariant.Single)
 
-fun fetchSides(): List<Side> = listOf(Side.Zero, Side.Cross)
+fun fetchSides(): List<GameState> = listOf(GameState.Zero, GameState.Cross)
 
-fun changeStartScreenToGameScreen(gameVariant: GameVariant?, side: Side?): Screen {
+fun changeStartScreenToGameScreen(gameVariant: GameVariant?, side: GameState?): Screen {
     if (gameVariant != null && side != null) {
         return Screen.GameScreen
     }
@@ -14,22 +18,15 @@ fun changeStartScreenToGameScreen(gameVariant: GameVariant?, side: Side?): Scree
     return Screen.StartScreen
 }
 
-fun List<Field>.changeFields(id: Int, value: GameFiledState): List<Field> {
-    if (this[id].state != GameFiledState.Empty) {
+fun Array<Array<Field>>.changeFields(firstIndex: Int, secondIndex: Int, value: GameState): Array<Array<Field>> {
+    if (this[firstIndex][secondIndex].state != null) {
         return this
     }
 
-    return this.map { it.findAndChangeField(id, value) }
+    return this.apply { this[firstIndex][secondIndex] = Field(value, firstIndex, secondIndex) } //TODO(work????)
 }
 
-private fun Field.findAndChangeField(id: Int, value: GameFiledState): Field {
-    if (this.id == id) {
-        return Field(value, id)
-    }
-
-    return this
-}
-
-fun fieldsCheck(fields: List<Field>): Boolean {
+fun fieldsCheck(fields: Array<Array<Field>>): Boolean {
     return true
 }
+

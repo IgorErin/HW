@@ -7,11 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
-import compose.Side
+import compose.GameState
 
 @Composable
 fun SideItem(
-    side: Side,
+    side: GameState,
     onClick: () -> Unit
 ) {
     Button(onClick = onClick) {

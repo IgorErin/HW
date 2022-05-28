@@ -31,7 +31,8 @@ fun View(viewModel: ViewModel) {
             }
             Screen.WinScreen -> {
                 WinScreen(
-                    true,
+                    state.gameVariant ?: TODO(),
+                    state.side == state.nextFieldState, //TODO()
                     viewModel::onBackClick
                 )
             }
