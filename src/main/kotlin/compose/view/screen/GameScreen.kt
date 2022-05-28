@@ -18,27 +18,24 @@ import compose.view.items.FieldItem
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun GameScreen(
-    gameVariant: GameVariant?,
+    isWin: Boolean,
     fields: Array<Array<Field>>,
     onFieldSelect: (Int, Int) -> Unit,
 ) = Box(
     contentAlignment = Alignment.Center,
     modifier = Modifier.fillMaxSize()
 ) {
-    val openGame = remember { mutableStateOf(true) }
-
     GeneralField(fields, onFieldSelect)
 
-    if (openGame.value) {
+    if (isWin) {
         AlertDialog(
             onDismissRequest = {
-                openGame.value = false
             },
             title = { Text(text = "Подтверждение действия") },
             text = { Text("Вы действительно хотите удалить выбранный элемент?") },
             buttons = {
                 Button(
-                    onClick = { openGame.value = false }
+                    onClick = {  }
                 ) {
                     Text("OK", fontSize = 22.sp)
                 }

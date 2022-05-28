@@ -24,7 +24,7 @@ fun View(viewModel: ViewModel) {
             }
             Screen.GameScreen -> {
                 GameScreen(
-                    state.gameVariant,
+                    state.isWin,
                     state.fields,
                     viewModel::onFieldSelect
                 )

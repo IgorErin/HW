@@ -24,7 +24,8 @@ class ViewModel {
         var gameVariant: GameVariant?,
         val fields: Array<Array<Field>>,
         var nextFieldState: GameState,
-        var side: GameState?
+        var side: GameState?,
+        var isWin: Boolean
     )
 
     private fun initialState(): State = State(
@@ -32,7 +33,8 @@ class ViewModel {
         null,
         fetchFields(),
         GameState.Cross,
-        null
+        null,
+        false
     )
 
     private inline fun updateState(update: State.() -> State) {
@@ -42,11 +44,13 @@ class ViewModel {
     fun onFieldSelect(firstIndex: Int, secondIndex: Int) {
         val newFields = state.fields.changeFields(firstIndex, secondIndex, state.nextFieldState)
 
-        if (fieldsCheck(newFields)) {
+        /*if (fieldsCheck(newFields)) {
             return updateState { copy(screen = Screen.WinScreen) }
-        }
+        }*/
 
-        return updateState { copy( nextFieldState = nextMove(nextFieldState) ,fields = newFields) }
+        return updateState {
+            copy( nextFieldState = nextMove(nextFieldState), fields = newFields, isWin = fieldsCheck(fields))
+        }
     }
 
     fun onGameSelect(value: GameVariant) = updateState {
