@@ -1,9 +1,5 @@
 package compose
 
-import androidx.compose.foundation.shape.ZeroCornerSize
-import java.util.Arrays
-import kotlin.concurrent.fixedRateTimer
-
 fun fetchFields(): Array<Array<Field>> = Array(3) { firstIndex ->
     Array(3) { secondIndex ->
         Field(null, firstIndex, secondIndex)
@@ -22,20 +18,18 @@ fun changeStartScreenToGameScreen(gameVariant: GameVariant?, side: GameState?): 
     return Screen.StartScreen
 }
 
-fun Array<Array<Field>>.changeFields(firstIndex: Int, secondIndex: Int, value: GameState): Array<Array<Field>> {
-    /*if (this[firstIndex][secondIndex].state != null) {
-        return this
-    }*/
+fun Array<Array<Field>>.changeFields(
+    firstIndex: Int,
+    secondIndex: Int,
+    value: GameState
+): Array<Array<Field>> = this.apply { this[firstIndex][secondIndex].state = value }
 
-    return this.apply { this[firstIndex][secondIndex].state = value } //TODO(work????)
-}
-
-fun nextMove(currentValue: GameState): GameState = when (currentValue) {
+fun GameState.anotherState(): GameState = when (this) {
     GameState.Cross -> GameState.Zero
     GameState.Zero -> GameState.Cross
 }
 
-fun fieldsCheck(fields: Array<Array<Field>>): Boolean =
+fun fieldsCheck(fields: Array<Array<Field>>): Boolean = //TODO(no win side case!!!)
     checkLines(fields) || checkColumns(fields) || checkDiagonals(fields)
 
 private fun checkLines(fields: Array<Array<Field>>): Boolean {
@@ -76,11 +70,27 @@ private fun checkSubArray(fields: Array<Field>): Boolean {
     }
 }
 
-fun easyBotMove(fields: Array<Array<Field>>): Array<Array<Field>> {
+fun Array<Array<Field>>.botMoveFields(
+    gameVariant: GameVariant?,
+    botSide: GameState?
+): Array<Array<Field>> {
+    if (gameVariant == null || botSide == null) {
+        return this
+    }
+
+    return when(gameVariant) {
+        GameVariant.EasyBot -> easyBotMovePosition(this, botSide)
+        GameVariant.HardBot -> hardBotMovePosition(this, botSide)
+        GameVariant.Single -> this
+    }
+}
+
+fun easyBotMovePosition(fields: Array<Array<Field>>, state: GameState): Array<Array<Field>> {
     TODO()
 }
 
-fun hardBotMove(fields: Array<Array<Field>>): Array<Array<Field>> {
+fun hardBotMovePosition(fields: Array<Array<Field>>, state: GameState): Array<Array<Field>> {
     TODO()
 }
+
 

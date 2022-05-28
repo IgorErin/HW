@@ -24,19 +24,10 @@ fun GameScreen(
     fields: Array<Array<Field>>,
     onFieldSelect: (Int, Int) -> Unit,
     onOneMoreGame: () -> Unit,
-    isBotMove: Boolean,
-    botLineIndex: Int?,
-    botColumnIndex: Int?
 ) = Box(
     contentAlignment = Alignment.Center,
     modifier = Modifier.fillMaxSize()
 ) {
-    if (isBotMove) {
-        require(botLineIndex != null && botColumnIndex != null) { "bot error, null position" }
-
-        onFieldSelect(botLineIndex, botColumnIndex)
-    }
-
     GeneralField(fields, onFieldSelect)
 
     if (gameOver) {

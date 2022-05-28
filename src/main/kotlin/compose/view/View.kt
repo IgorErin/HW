@@ -11,7 +11,7 @@ import compose.view.screen.StartScreen
 @Composable
 fun View(viewModel: ViewModel) {
     val state = viewModel.state
-    val isPlayerWin = state.nextFieldState != state.side
+    val isPlayerWin = state.nextFieldState != state.playerSide
 
     MaterialTheme {
         when(state.screen) {
@@ -26,17 +26,14 @@ fun View(viewModel: ViewModel) {
             Screen.GameScreen -> {
                 GameScreen(
                     isPlayerWin,
-                    state.isWin,
+                    state.gameOver,
                     state.fields,
                     viewModel::onFieldSelect,
                     viewModel::onBackClick,
-                    isBotMove(state),
-                    state.botLineIndex,
-                    state.botColumnIndex
                 )
             }
         }
     }
 }
 
-fun isBotMove(state: ViewModel.State) = state.gameVariant != GameVariant.Single && state.nextFieldState != state.side
+//fun isBotMove(state: ViewModel.State) = state.gameVariant != GameVariant.Single && state.nextFieldState != state.side

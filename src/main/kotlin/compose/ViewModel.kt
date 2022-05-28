@@ -1,6 +1,5 @@
 package compose
 
-import androidx.compose.runtime.Updater
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -24,10 +23,8 @@ class ViewModel {
         var gameVariant: GameVariant?,
         val fields: Array<Array<Field>>,
         var nextFieldState: GameState,
-        var side: GameState?,
-        var isWin: Boolean,
-        var botLineIndex: Int?,
-        var botColumnIndex: Int?
+        var playerSide: GameState?,
+        var gameOver: Boolean,
     )
 
     private fun initialState(): State = State(
@@ -37,8 +34,6 @@ class ViewModel {
         GameState.Cross,
         null,
         false,
-        null,
-        null
     )
 
     private inline fun updateState(update: State.() -> State) {
@@ -49,17 +44,48 @@ class ViewModel {
         val newFields = state.fields.changeFields(firstIndex, secondIndex, state.nextFieldState)
 
         return updateState {
+            copy(
+                nextFieldState = nextFieldState.anotherState(),
+                fields = newFields.botMoveFields(gameVariant, state.playerSide?.anotherState()),
+                gameOver = fieldsCheck(fields)
+            )
+        }
+    }
+
+    fun onGameSelect(value: GameVariant) = updateState {
+        copy(
+            gameVariant = value,
+            screen = changeStartScreenToGameScreen(value, state.playerSide),
+            fields = fields.botMoveFields(gameVariant, state.playerSide?.anotherState())
+        )
+    }
+
+    fun onSideSelect(value: GameState) = updateState {
+        copy(
+            playerSide = value,
+            screen = changeStartScreenToGameScreen(state.gameVariant, value),
+            fields = fields.botMoveFields(gameVariant, value.anotherState())
+        )
+    }
+
+    fun onBackClick() = updateState { initialState() }
+
+
+    /*fun onFieldSelect(firstIndex: Int, secondIndex: Int) {
+        val newFields = state.fields.changeFields(firstIndex, secondIndex, state.nextFieldState)
+
+        return updateState {
             copy(nextFieldState = nextMove(nextFieldState), fields = newFields, isWin = fieldsCheck(fields))
         }
     }
 
     fun onGameSelect(value: GameVariant) = updateState {
-        copy(gameVariant = value, screen = changeStartScreenToGameScreen(value, state.side))
+        copy(gameVariant = value, screen = changeStartScreenToGameScreen(value, state.playerSide))
     }
 
     fun onSideSelect(value: GameState) = updateState {
-        copy(side = value, screen = changeStartScreenToGameScreen(state.gameVariant, value))
+        copy(playerSide = value, screen = changeStartScreenToGameScreen(state.gameVariant, value),)
     }
 
-    fun onBackClick() = updateState { initialState() }
+    fun onBackClick() = updateState { initialState() }*/
 }
