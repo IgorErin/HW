@@ -30,3 +30,6 @@ private fun Field.findAndChangeField(id: Int, value: GameFiledState): Field {
     return this
 }
 
+fun fieldsCheck(fields: List<Field>): Boolean {
+    return true
+}

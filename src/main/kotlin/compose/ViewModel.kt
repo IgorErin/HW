@@ -1,5 +1,6 @@
 package compose
 
+import androidx.compose.runtime.Updater
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -38,8 +39,14 @@ class ViewModel {
         state = state.update()
     }
 
-    fun onFieldSelect(id: Int) = updateState {
-        copy(fields = fields.changeFields(id, nextFieldState))
+    fun onFieldSelect(id: Int) {
+        val newFields = state.fields.changeFields(id, state.nextFieldState)
+        //return updateState { copy(fields = fields.changeFields(id, nextFieldState)) }
+        if (fieldsCheck(newFields)) {
+            return updateState { copy(screen = Screen.WinScreen) }
+        }
+
+        return updateState { copy( fields = newFields) }
     }
 
     fun onGameSelect(value: GameVariant) = updateState {
@@ -49,4 +56,6 @@ class ViewModel {
     fun onSideSelect(value: Side) = updateState {
         copy(side = value, screen = changeStartScreenToGameScreen(state.gameVariant, value))
     }
+
+    fun onBackClick() = updateState { initialState() }
 }

@@ -17,7 +17,7 @@ fun GameScreen(
     gameVariant: GameVariant?,
     fields: List<Field>,
     onFieldSelect: (Int) -> Unit,
-) = Box(contentAlignment = Alignment.Center,) { //TODO()
+) = Box(contentAlignment = Alignment.Center) { //TODO()
     Box {
         Column() {
             Text(

@@ -6,6 +6,7 @@ import compose.Screen
 import compose.ViewModel
 import compose.view.screen.GameScreen
 import compose.view.screen.StartScreen
+import compose.view.screen.WinScreen
 
 @Composable
 fun View(viewModel: ViewModel) {
@@ -29,7 +30,10 @@ fun View(viewModel: ViewModel) {
                 )
             }
             Screen.WinScreen -> {
-
+                WinScreen(
+                    true,
+                    viewModel::onBackClick
+                )
             }
         }
     }

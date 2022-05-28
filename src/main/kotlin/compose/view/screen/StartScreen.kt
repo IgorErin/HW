@@ -22,7 +22,8 @@ fun StartScreen(
     contentAlignment = Alignment.Center,
     modifier = Modifier.fillMaxSize()
 ) {//TODO()
-    Column(modifier = Modifier.fillMaxSize(),
+    Column(
+        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

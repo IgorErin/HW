@@ -14,10 +14,6 @@ enum class GameVariant {
     EasyBot, HardBot, Single
 }
 
-enum class MoveState {
-    Cross, Zero
-}
-
 enum class Side {
     Cross, Zero
 }
