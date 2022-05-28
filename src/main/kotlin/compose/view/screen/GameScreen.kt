@@ -69,10 +69,10 @@ fun GeneralField(fields: Array<Array<Field>>, onFieldSelect: (Int, Int) -> Unit)
 
 fun winLooseMessage(isWin: Boolean): String {
     if (isWin) {
-        return "Congratulations !!! Luck is on your side play one more game"
+        return "Congratulations!!! Luck is on your side, play one more game!"
     }
 
-    return "Do not be upset, luck will smile at you in the next game !"
+    return "Do not be upset, luck will smile at you in the next game!"
 }
 
 fun winLooseTitle(isWin: Boolean): String {

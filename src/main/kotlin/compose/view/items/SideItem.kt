@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import compose.GameState
+import compose.GameVariant
 
 @Composable
 fun SideItem(
@@ -22,4 +23,9 @@ fun SideItem(
             modifier = Modifier.padding(10.dp)
         )
     }
+}
+
+fun printSideName(side: GameState): String = when(side) {
+    GameState.Zero -> "zero"
+    GameState.Cross -> "cross"
 }

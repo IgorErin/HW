@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
+import compose.Field
+import compose.GameState
 import compose.GameVariant
 
 @Composable
@@ -19,9 +21,15 @@ fun GameItem(
     Button(onClick = onClick) {
         Text(
             buildAnnotatedString {
-                append("$game")
+                append(printGameName(game))
             },
             modifier = Modifier.padding(10.dp)
         )
     }
+}
+
+fun printGameName(game: GameVariant): String = when(game) {
+    GameVariant.EasyBot -> "easy bot"
+    GameVariant.HardBot -> "hard bot"
+    GameVariant.Single -> "Single "
 }

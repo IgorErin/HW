@@ -10,7 +10,9 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import compose.Field
+import compose.GameState
 
 @Composable
 internal fun FieldItem(
@@ -19,11 +21,15 @@ internal fun FieldItem(
 ) = Row(Modifier.clickable(onClick = onClick)) {
     Button(onClick = onClick) {
         Text(
-            buildAnnotatedString {
-                append("${field.state}")
-                withStyle(style = SpanStyle(color = androidx.compose.ui.graphics.Color.Companion.Black)) {}  //TODO()
-            },
-            modifier = Modifier.padding(10.dp)
+            text = printButtonChar(field),
+            modifier = Modifier.padding(10.dp),
+            fontSize = 30.sp
         )
     }
+}
+
+fun printButtonChar(field: Field): String = when(field.state) {
+    GameState.Cross -> "+"
+    GameState.Zero -> "0"
+    null -> "  "
 }

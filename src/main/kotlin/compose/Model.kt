@@ -76,3 +76,11 @@ private fun checkSubArray(fields: Array<Field>): Boolean {
     }
 }
 
+fun easyBotMove(fields: Array<Array<Field>>): Array<Array<Field>> {
+    TODO()
+}
+
+fun hardBotMove(fields: Array<Array<Field>>): Array<Array<Field>> {
+    TODO()
+}
+

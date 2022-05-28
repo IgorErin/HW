@@ -23,7 +23,7 @@ fun View(viewModel: ViewModel) {
             }
             Screen.GameScreen -> {
                 GameScreen(
-                    state.isWin, //TODO()
+                    state.nextFieldState != state.side,
                     state.isWin,
                     state.fields,
                     viewModel::onFieldSelect,
