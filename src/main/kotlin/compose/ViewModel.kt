@@ -40,14 +40,13 @@ class ViewModel {
     }
 
     fun onFieldSelect(firstIndex: Int, secondIndex: Int) {
-        println("$firstIndex, $secondIndex")
         val newFields = state.fields.changeFields(firstIndex, secondIndex, state.nextFieldState)
-        //return updateState { copy(fields = fields.changeFields(id, nextFieldState)) }
+
         if (fieldsCheck(newFields)) {
             return updateState { copy(screen = Screen.WinScreen) }
         }
 
-        return updateState { copy( fields = newFields) }
+        return updateState { copy( nextFieldState = nextMove(nextFieldState) ,fields = newFields) }
     }
 
     fun onGameSelect(value: GameVariant) = updateState {
