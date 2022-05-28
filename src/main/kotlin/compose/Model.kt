@@ -23,9 +23,9 @@ fun changeStartScreenToGameScreen(gameVariant: GameVariant?, side: GameState?): 
 }
 
 fun Array<Array<Field>>.changeFields(firstIndex: Int, secondIndex: Int, value: GameState): Array<Array<Field>> {
-    if (this[firstIndex][secondIndex].state != null) {
+    /*if (this[firstIndex][secondIndex].state != null) {
         return this
-    }
+    }*/
 
     return this.apply { this[firstIndex][secondIndex].state = value } //TODO(work????)
 }

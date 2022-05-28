@@ -25,7 +25,9 @@ class ViewModel {
         val fields: Array<Array<Field>>,
         var nextFieldState: GameState,
         var side: GameState?,
-        var isWin: Boolean
+        var isWin: Boolean,
+        var botLineIndex: Int?,
+        var botColumnIndex: Int?
     )
 
     private fun initialState(): State = State(
@@ -34,7 +36,9 @@ class ViewModel {
         fetchFields(),
         GameState.Cross,
         null,
-        false
+        false,
+        null,
+        null
     )
 
     private inline fun updateState(update: State.() -> State) {
