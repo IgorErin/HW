@@ -1,30 +1,14 @@
 package compose
 
+import compose.model.nextState
+
 const val FIELD_SIZE = 3
-fun fetchFields(): Array<Array<Field>> = Array(FIELD_SIZE) { Array(FIELD_SIZE) { Field(null) } }
-
-fun fetchGames(): List<GameVariant> = listOf(GameVariant.EasyBot, GameVariant.HardBot, GameVariant.Single)
-
-fun fetchSides(): List<GameFieldState> = listOf(GameFieldState.Zero, GameFieldState.Cross)
-
-fun changeStartScreenToGameScreen(side: GameFieldState?, gameVariant: GameVariant?): Screen {
-    if (gameVariant != null && side != null) {
-        return Screen.GameScreen
-    }
-
-    return Screen.StartScreen
-}
 
 fun Array<Array<Field>>.changeFields(
     firstIndex: Int,
     secondIndex: Int,
     value: GameFieldState
 ): Array<Array<Field>> = this.apply { this[firstIndex][secondIndex].state = value }
-
-fun GameFieldState.nextState(): GameFieldState = when (this) {
-    GameFieldState.Cross -> GameFieldState.Zero
-    GameFieldState.Zero -> GameFieldState.Cross
-}
 
 fun fieldsCheck(fields: Array<Array<Field>>): GameState = when {
     checkLines(fields) || checkColumns(fields) || checkDiagonals(fields) -> GameState.Win
@@ -106,36 +90,4 @@ fun emptyPairs(fields: Array<Array<Field>>): MutableList<Pair<Int, Int>> {
 
 private fun hardBotMovePosition(fields: Array<Array<Field>>, state: GameFieldState): Array<Array<Field>> {
     TODO()
-}
-
-fun GameFieldState.setNextMove(value: GameFieldState?, gameVariant: GameVariant?): GameFieldState {
-    if (value == null || gameVariant == null) {
-        return this
-    }
-
-    return when (gameVariant) {
-        GameVariant.Single -> GameFieldState.Cross
-        else -> value
-    }
-}
-
-fun Array<Array<Field>>.firstMoveFields(playerSide: GameFieldState?, gameVariant: GameVariant?): Array<Array<Field>> {
-    if (playerSide == null || gameVariant == null) {
-        return this
-    }
-
-    return when (playerSide) {
-        GameFieldState.Cross -> this
-        else -> this.botMoveFields(gameVariant, playerSide)
-    }
-}
-
-fun GameFieldState.nextMoveChange(fieldCheck: GameState, gameVariant: GameVariant?): GameFieldState {
-    gameVariant ?: throw NullPointerException("Game variant not selected")
-
-    if (fieldCheck != GameState.Unfinished || gameVariant == GameVariant.Single) {
-        return this.nextState()
-    }
-
-    return this
 }
