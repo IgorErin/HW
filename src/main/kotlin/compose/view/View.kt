@@ -17,6 +17,8 @@ fun View(viewModel: ViewModel) {
         when (state.screen) {
             Screen.StartScreen -> {
                 StartScreen(
+                    state.playerSide,
+                    state.gameVariant,
                     viewModel.sides,
                     viewModel.games,
                     viewModel::onGameSelect,

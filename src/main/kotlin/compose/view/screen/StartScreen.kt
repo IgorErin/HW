@@ -15,6 +15,8 @@ import compose.view.items.SideItem
 @Suppress("FunctionNaming")
 @Composable
 fun StartScreen(
+    playerSide: GameFieldState?,
+    gameVariant: GameVariant?,
     sides: List<GameFieldState>,
     games: List<GameVariant>,
     onSelectGameVariant: (GameVariant) -> Unit,
@@ -33,6 +35,7 @@ fun StartScreen(
         LazyRow(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             items(items = games) {
                 GameItem(
+                    it == gameVariant,
                     it,
                     onClick = { onSelectGameVariant(it) },
                 )
@@ -44,6 +47,7 @@ fun StartScreen(
         LazyRow(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             items(items = sides) {
                 SideItem(
+                    it == playerSide,
                     it,
                     onClick = { onSelectSide(it) },
                 )
