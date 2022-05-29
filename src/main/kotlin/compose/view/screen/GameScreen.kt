@@ -6,15 +6,12 @@ import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import compose.Field
 import compose.GameState
-import compose.GameVariant
 import compose.view.items.FieldItem
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -34,8 +31,8 @@ fun GameScreen(
     if (gameState != GameState.Unfinished) {
         AlertDialog(
             onDismissRequest = {},
-            title = { Text(text = winLooseTitle(isWin)) },
-            text = { Text(text = winLooseMessage(isWin)) },
+            title = { Text(text = winLooseTitle(isWin, gameState)) },
+            text = { Text(text = winLooseMessage(isWin, gameState)) },
             buttons = {
                 Row(
                     modifier = Modifier.padding(all = 8.dp),
@@ -68,18 +65,30 @@ fun GeneralField(fields: Array<Array<Field>>, onFieldSelect: (Int, Int) -> Unit)
     }
 }
 
-fun winLooseMessage(isWin: Boolean): String {
-    if (isWin) {
-        return "Congratulations!!! Luck is on your side, play one more game!"
+fun winLooseMessage(isWin: Boolean, gameState: GameState): String = when(gameState){
+    GameState.Win -> {
+        if (isWin) {
+            "Congratulations!!! Luck is on your side, play one more game!"
+        } else {
+            "Do not be upset, luck will smile at you in the next game!"
+        }
     }
-
-    return "Do not be upset, luck will smile at you in the next game!"
+    GameState.Draw -> {
+        "Congratulations, it was a good fight"
+    }
+    else -> throw TODO()
 }
 
-fun winLooseTitle(isWin: Boolean): String {
-    if (isWin) {
-        return "You win"
+fun winLooseTitle(isWin: Boolean, gameState: GameState): String = when(gameState) {
+    GameState.Win -> {
+        if (isWin) {
+            "You win"
+        } else {
+            "You lost"
+        }
     }
-
-    return "You lost"
+    GameState.Draw -> {
+        "Draw"
+    }
+    else -> throw TODO()
 }

@@ -23,8 +23,3 @@ fun SideItem(
         )
     }
 }
-
-fun printSideName(side: GameFieldState): String = when(side) {
-    GameFieldState.Zero -> "zero"
-    GameFieldState.Cross -> "cross"
-}
