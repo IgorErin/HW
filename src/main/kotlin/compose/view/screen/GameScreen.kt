@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import compose.Field
+import compose.GameState
 import compose.GameVariant
 import compose.view.items.FieldItem
 
@@ -20,7 +21,7 @@ import compose.view.items.FieldItem
 @Composable
 fun GameScreen(
     isWin: Boolean,
-    gameOver: Boolean,
+    gameState: GameState,
     fields: Array<Array<Field>>,
     onFieldSelect: (Int, Int) -> Unit,
     onOneMoreGame: () -> Unit,
@@ -30,7 +31,7 @@ fun GameScreen(
 ) {
     GeneralField(fields, onFieldSelect)
 
-    if (gameOver) {
+    if (gameState != GameState.Unfinished) {
         AlertDialog(
             onDismissRequest = {},
             title = { Text(text = winLooseTitle(isWin)) },

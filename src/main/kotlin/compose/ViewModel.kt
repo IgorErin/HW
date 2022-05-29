@@ -24,7 +24,7 @@ class ViewModel {
         val fields: Array<Array<Field>>,
         var nextMove: GameFieldState,
         var playerSide: GameFieldState?,
-        var gameState: Boolean,
+        var gameState: GameState,
         var count: Int
     )
 
@@ -34,7 +34,7 @@ class ViewModel {
         fetchFields(),
         GameFieldState.Cross,
         null,
-        false,
+        GameState.Unfinished,
         0
     )
 

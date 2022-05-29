@@ -1,8 +1,5 @@
 package compose
 
-import androidx.compose.animation.Crossfade
-import java.util.Arrays
-
 fun fetchFields(): Array<Array<Field>> = Array(3) { Array(3) { Field(null) } }
 
 fun fetchGames(): List<GameVariant> = listOf(GameVariant.EasyBot, GameVariant.HardBot, GameVariant.Single)
@@ -28,8 +25,11 @@ fun GameFieldState.nextState(): GameFieldState = when (this) {
     GameFieldState.Zero -> GameFieldState.Cross
 }
 
-fun fieldsCheck(fields: Array<Array<Field>>): Boolean = //TODO(no win side case!!!)
-    checkLines(fields) || checkColumns(fields) || checkDiagonals(fields)
+fun fieldsCheck(fields: Array<Array<Field>>): GameState = when {
+    checkLines(fields) || checkColumns(fields) || checkDiagonals(fields) -> GameState.Win
+    emptyPairs(fields).isEmpty() -> GameState.Draw
+    else -> GameState.Unfinished
+}
 
 private fun checkLines(fields: Array<Array<Field>>): Boolean {
     for (subArray in fields) {
@@ -70,7 +70,7 @@ private fun checkSubArray(fields: Array<Field>): Boolean {
 }
 
 fun Array<Array<Field>>.botMoveFields(gameVariant: GameVariant?, playerSide: GameFieldState?): Array<Array<Field>> {
-    if (gameVariant == null || playerSide == null) {
+    if (gameVariant == null || playerSide == null || emptyPairs(this).size == 0) {
         return this
     }
 
@@ -129,10 +129,10 @@ fun Array<Array<Field>>.firstMoveFields(playerSide: GameFieldState?, gameVariant
     }
 }
 
-fun GameFieldState.nextMoveChange(fieldCheck: Boolean, gameVariant: GameVariant?): GameFieldState { //TODO()
-    gameVariant ?: throw TODO()
+fun GameFieldState.nextMoveChange(fieldCheck: GameState, gameVariant: GameVariant?): GameFieldState {
+    gameVariant ?: throw NullPointerException("Game variant not selected")
 
-    if (fieldCheck || gameVariant == GameVariant.Single) {
+    if (fieldCheck != GameState.Unfinished || gameVariant == GameVariant.Single) {
         return this.nextState()
     }
 

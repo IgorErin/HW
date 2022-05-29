@@ -13,3 +13,7 @@ enum class GameFieldState {
 enum class GameVariant {
     EasyBot, HardBot, Single
 }
+
+enum class GameState {
+    Draw, Win, Unfinished
+}
