@@ -4,7 +4,6 @@ import compose.Field
 import compose.GameFieldState
 import compose.GameState
 import compose.GameVariant
-import compose.botMoveFields
 
 fun Array<Array<Field>>.changeFields(
     firstIndex: Int,

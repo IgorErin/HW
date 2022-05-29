@@ -3,10 +3,13 @@ package compose
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import compose.model.botMoveFields
+import compose.model.changeFields
 import compose.model.changeStartScreenToGameScreen
 import compose.model.fetchFields
 import compose.model.fetchGames
 import compose.model.fetchSides
+import compose.model.fieldsCheck
 import compose.model.firstMoveFields
 import compose.model.nextMoveChange
 import compose.model.setNextMove

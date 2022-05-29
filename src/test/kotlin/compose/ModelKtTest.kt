@@ -1,5 +1,6 @@
 package compose
 
+import compose.model.fieldsCheck
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -23,11 +24,11 @@ internal class ModelKtTest {
         assertEquals(gameState, fieldsCheck(fields))
     }
 
-    @ParameterizedTest
+    /*@ParameterizedTest
     @MethodSource("emptyPairMethodTest")
     fun `empty pair method test`(fields: Array<Array<Field>>, number: Int) {
         assertEquals(number, emptyPairs(fields).size)
-    }
+    }*/
 
     companion object {
         @JvmStatic
@@ -39,7 +40,7 @@ internal class ModelKtTest {
             Arguments.of(fullFilledInArrayWithDraw, GameState.Draw)
         )
 
-        @JvmStatic
+        /*@JvmStatic
         fun emptyPairMethodTest() = listOf(
             Arguments.of(emptyArray, 9),
             Arguments.of(filledInArrayWithoutWin, 3),
@@ -47,6 +48,6 @@ internal class ModelKtTest {
             Arguments.of(filledInArrayWithWinOnColumn, 2),
             Arguments.of(filledInArrayWithWinOnDiagonal, 1),
             Arguments.of(fullFilledInArrayWithDraw, 0)
-        )
+        )*/
     }
 }

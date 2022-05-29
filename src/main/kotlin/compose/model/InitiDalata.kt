@@ -1,6 +1,5 @@
 package compose.model
 
-import compose.FIELD_SIZE
 import compose.Field
 import compose.GameFieldState
 import compose.GameVariant

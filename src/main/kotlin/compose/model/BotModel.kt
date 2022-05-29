@@ -1,7 +1,9 @@
-package compose
+package compose.model
 
-import compose.model.changeFields
-import compose.model.nextState
+import compose.Field
+import compose.GameFieldState
+import compose.GameState
+import compose.GameVariant
 
 const val FIELD_SIZE = 3
 
@@ -56,7 +58,7 @@ fun Array<Array<Field>>.botMoveFields(gameVariant: GameVariant?, playerSide: Gam
 
     return when (gameVariant) {
         GameVariant.EasyBot -> easyBotMovePosition(this, playerSide.nextState())
-        GameVariant.HardBot -> hardBotMovePosition(this, playerSide.nextState())
+        GameVariant.HardBot -> hardBotMovePos(this, playerSide.nextState())
         GameVariant.Single -> this
     }
 }
@@ -69,7 +71,30 @@ private fun easyBotMovePosition(fields: Array<Array<Field>>, state: GameFieldSta
     return fields.changeFields(position.first, position.second, state)
 }
 
-fun emptyPairs(fields: Array<Array<Field>>): MutableList<Pair<Int, Int>> {
+private fun hardBotMovePos(fields: Array<Array<Field>>, state: GameFieldState): Array<Array<Field>> = when (state) {
+    GameFieldState.Cross -> crossBotMoveFields(fields)
+    GameFieldState.Zero -> zeroBotMoveFields(fields)
+}
+
+private fun crossBotMoveFields(fields: Array<Array<Field>>): Array<Array<Field>> {
+    TODO()
+}
+
+private fun zeroBotMoveFields(fields: Array<Array<Field>>): Array<Array<Field>> = when {
+    fields[1][1].state == null -> fields.changeFields(1, 1, GameFieldState.Zero)
+    else -> {
+        val listOfEmptyPositions = emptyPairs(fields)
+
+        if (fields[1][1].state == GameFieldState.Zero) {
+
+        } else {
+
+        }
+        TODO()
+    }
+}
+
+private fun emptyPairs(fields: Array<Array<Field>>): MutableList<Pair<Int, Int>> {
     val list = mutableListOf<Pair<Int, Int>>()
 
     for (lineIndex in fields.indices) {
@@ -81,8 +106,4 @@ fun emptyPairs(fields: Array<Array<Field>>): MutableList<Pair<Int, Int>> {
     }
 
     return list
-}
-
-private fun hardBotMovePosition(fields: Array<Array<Field>>, state: GameFieldState): Array<Array<Field>> {
-    TODO()
 }
