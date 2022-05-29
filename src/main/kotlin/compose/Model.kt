@@ -1,10 +1,6 @@
 package compose
 
-fun fetchFields(): Array<Array<Field>> = Array(3) { firstIndex ->
-    Array(3) { secondIndex ->
-        Field(null, firstIndex, secondIndex)
-    }
-}
+fun fetchFields(): Array<Array<Field>> = Array(3) { Array(3) { Field(null) } }
 
 fun fetchGames(): List<GameVariant> = listOf(GameVariant.EasyBot, GameVariant.HardBot, GameVariant.Single)
 
@@ -70,10 +66,7 @@ private fun checkSubArray(fields: Array<Field>): Boolean {
     }
 }
 
-fun Array<Array<Field>>.botMoveFields(
-    gameVariant: GameVariant?,
-    botSide: GameState?
-): Array<Array<Field>> {
+fun Array<Array<Field>>.botMoveFields(gameVariant: GameVariant?, botSide: GameState?): Array<Array<Field>> {
     if (gameVariant == null || botSide == null) {
         return this
     }
@@ -85,12 +78,28 @@ fun Array<Array<Field>>.botMoveFields(
     }
 }
 
-fun easyBotMovePosition(fields: Array<Array<Field>>, state: GameState): Array<Array<Field>> {
-    TODO()
+private fun easyBotMovePosition(fields: Array<Array<Field>>, state: GameState): Array<Array<Field>> {
+    val list = emptyPairs(fields)
+    val index = list.indices.random()
+    val position = list[index]
+
+    return fields.changeFields(position.first, position.second, state)
 }
 
-fun hardBotMovePosition(fields: Array<Array<Field>>, state: GameState): Array<Array<Field>> {
-    TODO()
+private fun emptyPairs(fields: Array<Array<Field>>): MutableList<Pair<Int, Int>> {
+    val list = mutableListOf<Pair<Int, Int>>()
+
+    for (lineIndex in fields.indices) {
+        for (columnIndex in fields[lineIndex].indices) {
+            if (fields[lineIndex][columnIndex].state == null) {
+                list.add(Pair(lineIndex, columnIndex))
+            }
+        }
+    }
+
+    return list
 }
 
-
+private fun hardBotMovePosition(fields: Array<Array<Field>>, state: GameState): Array<Array<Field>> {
+    TODO()
+}

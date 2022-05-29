@@ -22,7 +22,7 @@ class ViewModel {
         var screen: Screen,
         var gameVariant: GameVariant?,
         val fields: Array<Array<Field>>,
-        var nextFieldState: GameState,
+        var lastMove: GameState,
         var playerSide: GameState?,
         var gameOver: Boolean,
     )
@@ -41,51 +41,36 @@ class ViewModel {
     }
 
     fun onFieldSelect(firstIndex: Int, secondIndex: Int) {
-        val newFields = state.fields.changeFields(firstIndex, secondIndex, state.nextFieldState)
+        var newFields = state.fields.changeFields(firstIndex, secondIndex, state.nextPlayerFieldState)
 
-        return updateState {
-            copy(
-                nextFieldState = nextFieldState.anotherState(),
-                fields = newFields.botMoveFields(gameVariant, state.playerSide?.anotherState()),
-                gameOver = fieldsCheck(fields)
-            )
-        }
+
     }
 
     fun onGameSelect(value: GameVariant) = updateState {
+        val firstBotMoveFields = when(state.playerSide) {
+            GameState.Cross -> state.fields
+            else -> fields.botMoveFields(value, state.playerSide?.anotherState())
+        }
+
         copy(
+            fields = firstBotMoveFields,
             gameVariant = value,
-            screen = changeStartScreenToGameScreen(value, state.playerSide),
-            fields = fields.botMoveFields(gameVariant, state.playerSide?.anotherState())
+            screen = changeStartScreenToGameScreen(value, state.playerSide)
         )
     }
 
     fun onSideSelect(value: GameState) = updateState {
+        val firstBotMoveFields = when(value) {
+            GameState.Cross -> state.fields
+            GameState.Zero -> fields.botMoveFields(state.gameVariant, value.anotherState())
+        }
+
         copy(
+            fields = firstBotMoveFields,
             playerSide = value,
-            screen = changeStartScreenToGameScreen(state.gameVariant, value),
-            fields = fields.botMoveFields(gameVariant, value.anotherState())
+            screen = changeStartScreenToGameScreen(state.gameVariant, value)
         )
     }
 
     fun onBackClick() = updateState { initialState() }
-
-
-    /*fun onFieldSelect(firstIndex: Int, secondIndex: Int) {
-        val newFields = state.fields.changeFields(firstIndex, secondIndex, state.nextFieldState)
-
-        return updateState {
-            copy(nextFieldState = nextMove(nextFieldState), fields = newFields, isWin = fieldsCheck(fields))
-        }
-    }
-
-    fun onGameSelect(value: GameVariant) = updateState {
-        copy(gameVariant = value, screen = changeStartScreenToGameScreen(value, state.playerSide))
-    }
-
-    fun onSideSelect(value: GameState) = updateState {
-        copy(playerSide = value, screen = changeStartScreenToGameScreen(state.gameVariant, value),)
-    }
-
-    fun onBackClick() = updateState { initialState() }*/
 }

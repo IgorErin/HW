@@ -1,6 +1,6 @@
 package compose
 
-data class Field(var state: GameState?, val firstIndex: Int, val secondIndex: Int)
+data class Field(var state: GameState?)
 
 enum class Screen {
     StartScreen, GameScreen
