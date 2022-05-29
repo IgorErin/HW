@@ -12,9 +12,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import compose.Field
 import compose.GameState
+import compose.exceptions.ViewException
 import compose.view.items.FieldItem
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun GameScreen(
     isWin: Boolean,
@@ -28,6 +28,28 @@ fun GameScreen(
 ) {
     GeneralField(fields, onFieldSelect)
 
+    AlertDialogWindow(isWin, gameState, onOneMoreGame)
+}
+
+@Composable
+fun GeneralField(fields: Array<Array<Field>>, onFieldSelect: (Int, Int) -> Unit) {
+    Column(verticalArrangement = Arrangement.SpaceBetween) {
+        for (lineIndex in fields.indices) {
+            Row {
+                for (columnIndex in fields[lineIndex].indices) {
+                    FieldItem(
+                        fields[lineIndex][columnIndex],
+                        onClick = { onFieldSelect(lineIndex, columnIndex) },
+                    )
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun AlertDialogWindow(isWin: Boolean, gameState: GameState, onOneMoreGame: () -> Unit) {
     if (gameState != GameState.Unfinished) {
         AlertDialog(
             onDismissRequest = {},
@@ -49,22 +71,6 @@ fun GameScreen(
     }
 }
 
-@Composable
-fun GeneralField(fields: Array<Array<Field>>, onFieldSelect: (Int, Int) -> Unit) {
-    Column(verticalArrangement = Arrangement.SpaceBetween) {
-        for (lineIndex in fields.indices) {
-            Row {
-                for (columnIndex in fields[lineIndex].indices) {
-                    FieldItem(
-                        fields[lineIndex][columnIndex],
-                        onClick = { onFieldSelect(lineIndex, columnIndex) },
-                    )
-                }
-            }
-        }
-    }
-}
-
 fun winLooseMessage(isWin: Boolean, gameState: GameState): String = when(gameState){
     GameState.Win -> {
         if (isWin) {
@@ -76,7 +82,7 @@ fun winLooseMessage(isWin: Boolean, gameState: GameState): String = when(gameSta
     GameState.Draw -> {
         "Congratulations, it was a good fight"
     }
-    else -> throw TODO()
+    else -> throw ViewException("unfinished game error, restart game, pleas")
 }
 
 fun winLooseTitle(isWin: Boolean, gameState: GameState): String = when(gameState) {
@@ -90,5 +96,5 @@ fun winLooseTitle(isWin: Boolean, gameState: GameState): String = when(gameState
     GameState.Draw -> {
         "Draw"
     }
-    else -> throw TODO()
+    else -> throw ViewException("unfinished game error, restart game, pleas")
 }
