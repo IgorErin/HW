@@ -44,16 +44,23 @@ class ViewModel {
 
     fun onFieldSelect(firstIndex: Int, secondIndex: Int) {
         val newFields = state.fields.changeFields(firstIndex, secondIndex, state.nextMove)
+        val newGameState = fieldsCheck(newFields)
+        val botMoveFields = newFields.botMoveFields(state.gameVariant, state.playerSide)
 
         return updateState {
-            copy(nextMove = nextMove.nextState(), fields = newFields, gameState = fieldsCheck(fields))
+            copy(
+                nextMove = nextMove.nextMoveChange(newGameState, state.gameVariant),
+                fields = botMoveFields,
+                gameState = fieldsCheck(botMoveFields),
+                count = count + 1
+            )
         }
     }
     fun onGameSelect(value: GameVariant) = updateState {
         copy(
             fields = fields.firstMoveFields(playerSide, value),
             gameVariant = value,
-            screen = changeStartScreenToGameScreen(value, state.playerSide),
+            screen = changeStartScreenToGameScreen(state.playerSide, value),
             nextMove = nextMove.setNextMove(state.playerSide, value)
         )
     }
@@ -61,7 +68,7 @@ class ViewModel {
         copy(
             fields = fields.firstMoveFields(value, gameVariant),
             playerSide = value,
-            screen = changeStartScreenToGameScreen(gameVariant, value),
+            screen = changeStartScreenToGameScreen(value, gameVariant),
             nextMove = nextMove.setNextMove(value, gameVariant)
         )
     }

@@ -1,6 +1,7 @@
 package compose
 
 import androidx.compose.animation.Crossfade
+import java.util.Arrays
 
 fun fetchFields(): Array<Array<Field>> = Array(3) { Array(3) { Field(null) } }
 
@@ -8,7 +9,7 @@ fun fetchGames(): List<GameVariant> = listOf(GameVariant.EasyBot, GameVariant.Ha
 
 fun fetchSides(): List<GameFieldState> = listOf(GameFieldState.Zero, GameFieldState.Cross)
 
-fun changeStartScreenToGameScreen(gameVariant: GameVariant?, side: GameFieldState?): Screen {
+fun changeStartScreenToGameScreen(side: GameFieldState?, gameVariant: GameVariant?): Screen {
     if (gameVariant != null && side != null) {
         return Screen.GameScreen
     }
@@ -68,14 +69,14 @@ private fun checkSubArray(fields: Array<Field>): Boolean {
     }
 }
 
-fun Array<Array<Field>>.botMoveFields(gameVariant: GameVariant?, botSide: GameFieldState?): Array<Array<Field>> {
-    if (gameVariant == null || botSide == null) {
+fun Array<Array<Field>>.botMoveFields(gameVariant: GameVariant?, playerSide: GameFieldState?): Array<Array<Field>> {
+    if (gameVariant == null || playerSide == null) {
         return this
     }
 
     return when(gameVariant) {
-        GameVariant.EasyBot -> easyBotMovePosition(this, botSide)
-        GameVariant.HardBot -> hardBotMovePosition(this, botSide)
+        GameVariant.EasyBot -> easyBotMovePosition(this, playerSide.nextState())
+        GameVariant.HardBot -> hardBotMovePosition(this, playerSide.nextState())
         GameVariant.Single -> this
     }
 }
@@ -124,6 +125,16 @@ fun Array<Array<Field>>.firstMoveFields(playerSide: GameFieldState?, gameVariant
 
     return when(playerSide) {
         GameFieldState.Cross -> this
-        else -> this.botMoveFields(gameVariant, playerSide.nextState())
+        else -> this.botMoveFields(gameVariant, playerSide)
     }
+}
+
+fun GameFieldState.nextMoveChange(fieldCheck: Boolean, gameVariant: GameVariant?): GameFieldState { //TODO()
+    gameVariant ?: throw TODO()
+
+    if (fieldCheck || gameVariant == GameVariant.Single) {
+        return this.nextState()
+    }
+
+    return this
 }
