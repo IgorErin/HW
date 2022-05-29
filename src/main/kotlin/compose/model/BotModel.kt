@@ -1,14 +1,9 @@
 package compose
 
+import compose.model.changeFields
 import compose.model.nextState
 
 const val FIELD_SIZE = 3
-
-fun Array<Array<Field>>.changeFields(
-    firstIndex: Int,
-    secondIndex: Int,
-    value: GameFieldState
-): Array<Array<Field>> = this.apply { this[firstIndex][secondIndex].state = value }
 
 fun fieldsCheck(fields: Array<Array<Field>>): GameState = when {
     checkLines(fields) || checkColumns(fields) || checkDiagonals(fields) -> GameState.Win

@@ -34,7 +34,7 @@ fun GameItem(
 }
 
 fun printGameName(game: GameVariant): String = when (game) {
-    GameVariant.EasyBot -> "easy bot"
-    GameVariant.HardBot -> "hard bot"
+    GameVariant.EasyBot -> "Easy bot"
+    GameVariant.HardBot -> "Hard bot"
     GameVariant.Single -> "Single "
 }

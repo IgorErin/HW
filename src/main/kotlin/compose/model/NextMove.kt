@@ -6,6 +6,12 @@ import compose.GameState
 import compose.GameVariant
 import compose.botMoveFields
 
+fun Array<Array<Field>>.changeFields(
+    firstIndex: Int,
+    secondIndex: Int,
+    value: GameFieldState
+): Array<Array<Field>> = this.apply { this[firstIndex][secondIndex].state = value }
+
 fun GameFieldState.nextMoveChange(fieldCheck: GameState, gameVariant: GameVariant?): GameFieldState {
     gameVariant ?: throw NullPointerException("Game variant not selected")
 
