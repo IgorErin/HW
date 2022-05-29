@@ -6,7 +6,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-internal class ModelKtTest{
+internal class ModelKtTest {
     @Test
     fun `fetch sides test`() {
         assertEquals(listOf(GameFieldState.Zero, GameFieldState.Cross), ViewModel().sides)

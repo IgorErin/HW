@@ -1,6 +1,11 @@
 package compose.view.screen
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
@@ -15,6 +20,7 @@ import compose.GameState
 import compose.exceptions.ViewException
 import compose.view.items.FieldItem
 
+@Suppress("FunctionNaming")
 @Composable
 fun GameScreen(
     isWin: Boolean,
@@ -31,6 +37,7 @@ fun GameScreen(
     AlertDialogWindow(isWin, gameState, onOneMoreGame)
 }
 
+@Suppress("FunctionNaming")
 @Composable
 fun GeneralField(fields: Array<Array<Field>>, onFieldSelect: (Int, Int) -> Unit) {
     Column(verticalArrangement = Arrangement.SpaceBetween) {
@@ -47,6 +54,7 @@ fun GeneralField(fields: Array<Array<Field>>, onFieldSelect: (Int, Int) -> Unit)
     }
 }
 
+@Suppress("FunctionNaming")
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AlertDialogWindow(isWin: Boolean, gameState: GameState, onOneMoreGame: () -> Unit) {
@@ -71,7 +79,7 @@ fun AlertDialogWindow(isWin: Boolean, gameState: GameState, onOneMoreGame: () ->
     }
 }
 
-fun winLooseMessage(isWin: Boolean, gameState: GameState): String = when(gameState){
+fun winLooseMessage(isWin: Boolean, gameState: GameState): String = when (gameState) {
     GameState.Win -> {
         if (isWin) {
             "Congratulations!!! Luck is on your side, play one more game!"
@@ -85,7 +93,7 @@ fun winLooseMessage(isWin: Boolean, gameState: GameState): String = when(gameSta
     else -> throw ViewException("unfinished game error, restart game, pleas")
 }
 
-fun winLooseTitle(isWin: Boolean, gameState: GameState): String = when(gameState) {
+fun winLooseTitle(isWin: Boolean, gameState: GameState): String = when (gameState) {
     GameState.Win -> {
         if (isWin) {
             "You win"

@@ -1,6 +1,7 @@
 package compose
 
-fun fetchFields(): Array<Array<Field>> = Array(3) { Array(3) { Field(null) } }
+const val FIELD_SIZE = 3
+fun fetchFields(): Array<Array<Field>> = Array(FIELD_SIZE) { Array(FIELD_SIZE) { Field(null) } }
 
 fun fetchGames(): List<GameVariant> = listOf(GameVariant.EasyBot, GameVariant.HardBot, GameVariant.Single)
 
@@ -64,7 +65,7 @@ private fun checkSubArray(fields: Array<Field>): Boolean {
     val firstState = fields[0].state ?: return false
 
     return when {
-        fields.count { it.state == firstState } == 3 -> true
+        fields.count { it.state == firstState } == FIELD_SIZE -> true
         else -> false
     }
 }
@@ -74,7 +75,7 @@ fun Array<Array<Field>>.botMoveFields(gameVariant: GameVariant?, playerSide: Gam
         return this
     }
 
-    return when(gameVariant) {
+    return when (gameVariant) {
         GameVariant.EasyBot -> easyBotMovePosition(this, playerSide.nextState())
         GameVariant.HardBot -> hardBotMovePosition(this, playerSide.nextState())
         GameVariant.Single -> this
@@ -112,7 +113,7 @@ fun GameFieldState.setNextMove(value: GameFieldState?, gameVariant: GameVariant?
         return this
     }
 
-    return when(gameVariant) {
+    return when (gameVariant) {
         GameVariant.Single -> GameFieldState.Cross
         else -> value
     }
@@ -123,7 +124,7 @@ fun Array<Array<Field>>.firstMoveFields(playerSide: GameFieldState?, gameVariant
         return this
     }
 
-    return when(playerSide) {
+    return when (playerSide) {
         GameFieldState.Cross -> this
         else -> this.botMoveFields(gameVariant, playerSide)
     }

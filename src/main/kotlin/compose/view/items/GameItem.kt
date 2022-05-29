@@ -11,11 +11,12 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import compose.GameVariant
 
+@Suppress("FunctionNaming")
 @Composable
 fun GameItem(
     game: GameVariant,
     onClick: () -> Unit
-)  = Row(Modifier.clickable(onClick = onClick)) {
+) = Row(Modifier.clickable(onClick = onClick)) {
     Button(onClick = onClick) {
         Text(
             buildAnnotatedString {
@@ -26,7 +27,7 @@ fun GameItem(
     }
 }
 
-fun printGameName(game: GameVariant): String = when(game) {
+fun printGameName(game: GameVariant): String = when (game) {
     GameVariant.EasyBot -> "easy bot"
     GameVariant.HardBot -> "hard bot"
     GameVariant.Single -> "Single "

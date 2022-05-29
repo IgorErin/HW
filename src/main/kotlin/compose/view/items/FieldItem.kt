@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.sp
 import compose.Field
 import compose.GameFieldState
 
+@Suppress("FunctionNaming")
 @Composable
 internal fun FieldItem(
     field: Field,
@@ -28,7 +29,7 @@ internal fun FieldItem(
     }
 }
 
-fun printButtonChar(field: Field): String = when(field.state) {
+fun printButtonChar(field: Field): String = when (field.state) {
     GameFieldState.Cross -> "+"
     GameFieldState.Zero -> "0"
     null -> "  "

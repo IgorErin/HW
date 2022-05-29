@@ -9,6 +9,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import compose.GameFieldState
 
+@Suppress("FunctionNaming")
 @Composable
 fun SideItem(
     side: GameFieldState,
@@ -17,7 +18,7 @@ fun SideItem(
     Button(onClick = onClick) {
         Text(
             buildAnnotatedString {
-                append("$side") //TODO()
+                append("$side") // TODO()
             },
             modifier = Modifier.padding(10.dp)
         )

@@ -12,6 +12,7 @@ import compose.GameVariant
 import compose.view.items.GameItem
 import compose.view.items.SideItem
 
+@Suppress("FunctionNaming")
 @Composable
 fun StartScreen(
     sides: List<GameFieldState>,
