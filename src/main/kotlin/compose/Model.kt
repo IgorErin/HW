@@ -89,7 +89,7 @@ private fun easyBotMovePosition(fields: Array<Array<Field>>, state: GameFieldSta
     return fields.changeFields(position.first, position.second, state)
 }
 
-private fun emptyPairs(fields: Array<Array<Field>>): MutableList<Pair<Int, Int>> {
+fun emptyPairs(fields: Array<Array<Field>>): MutableList<Pair<Int, Int>> {
     val list = mutableListOf<Pair<Int, Int>>()
 
     for (lineIndex in fields.indices) {
