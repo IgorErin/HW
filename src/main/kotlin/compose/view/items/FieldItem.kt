@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import compose.Field
-import compose.GameState
+import compose.GameFieldState
 
 @Composable
 internal fun FieldItem(
@@ -30,7 +30,7 @@ internal fun FieldItem(
 }
 
 fun printButtonChar(field: Field): String = when(field.state) {
-    GameState.Cross -> "+"
-    GameState.Zero -> "0"
+    GameFieldState.Cross -> "+"
+    GameFieldState.Zero -> "0"
     null -> "  "
 }

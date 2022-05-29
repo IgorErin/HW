@@ -4,9 +4,9 @@ fun fetchFields(): Array<Array<Field>> = Array(3) { Array(3) { Field(null) } }
 
 fun fetchGames(): List<GameVariant> = listOf(GameVariant.EasyBot, GameVariant.HardBot, GameVariant.Single)
 
-fun fetchSides(): List<GameState> = listOf(GameState.Zero, GameState.Cross)
+fun fetchSides(): List<GameFieldState> = listOf(GameFieldState.Zero, GameFieldState.Cross)
 
-fun changeStartScreenToGameScreen(gameVariant: GameVariant?, side: GameState?): Screen {
+fun changeStartScreenToGameScreen(gameVariant: GameVariant?, side: GameFieldState?): Screen {
     if (gameVariant != null && side != null) {
         return Screen.GameScreen
     }
@@ -17,12 +17,12 @@ fun changeStartScreenToGameScreen(gameVariant: GameVariant?, side: GameState?): 
 fun Array<Array<Field>>.changeFields(
     firstIndex: Int,
     secondIndex: Int,
-    value: GameState
+    value: GameFieldState
 ): Array<Array<Field>> = this.apply { this[firstIndex][secondIndex].state = value }
 
-fun GameState.anotherState(): GameState = when (this) {
-    GameState.Cross -> GameState.Zero
-    GameState.Zero -> GameState.Cross
+fun GameFieldState.nextState(): GameFieldState = when (this) {
+    GameFieldState.Cross -> GameFieldState.Zero
+    GameFieldState.Zero -> GameFieldState.Cross
 }
 
 fun fieldsCheck(fields: Array<Array<Field>>): Boolean = //TODO(no win side case!!!)
@@ -66,7 +66,7 @@ private fun checkSubArray(fields: Array<Field>): Boolean {
     }
 }
 
-fun Array<Array<Field>>.botMoveFields(gameVariant: GameVariant?, botSide: GameState?): Array<Array<Field>> {
+fun Array<Array<Field>>.botMoveFields(gameVariant: GameVariant?, botSide: GameFieldState?): Array<Array<Field>> {
     if (gameVariant == null || botSide == null) {
         return this
     }
@@ -78,7 +78,7 @@ fun Array<Array<Field>>.botMoveFields(gameVariant: GameVariant?, botSide: GameSt
     }
 }
 
-private fun easyBotMovePosition(fields: Array<Array<Field>>, state: GameState): Array<Array<Field>> {
+private fun easyBotMovePosition(fields: Array<Array<Field>>, state: GameFieldState): Array<Array<Field>> {
     val list = emptyPairs(fields)
     val index = list.indices.random()
     val position = list[index]
@@ -100,6 +100,6 @@ private fun emptyPairs(fields: Array<Array<Field>>): MutableList<Pair<Int, Int>>
     return list
 }
 
-private fun hardBotMovePosition(fields: Array<Array<Field>>, state: GameState): Array<Array<Field>> {
+private fun hardBotMovePosition(fields: Array<Array<Field>>, state: GameFieldState): Array<Array<Field>> {
     TODO()
 }

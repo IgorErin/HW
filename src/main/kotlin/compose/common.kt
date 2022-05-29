@@ -1,12 +1,12 @@
 package compose
 
-data class Field(var state: GameState?)
+data class Field(var state: GameFieldState?)
 
 enum class Screen {
     StartScreen, GameScreen
 }
 
-enum class GameState {
+enum class GameFieldState {
     Cross, Zero
 }
 

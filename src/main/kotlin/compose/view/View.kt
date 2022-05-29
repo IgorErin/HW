@@ -11,7 +11,7 @@ import compose.view.screen.StartScreen
 @Composable
 fun View(viewModel: ViewModel) {
     val state = viewModel.state
-    val isPlayerWin = state.nextPlayerFieldState != state.playerSide
+    val isPlayerWin = state.nextMove != state.playerSide
 
     MaterialTheme {
         when(state.screen) {
@@ -26,7 +26,7 @@ fun View(viewModel: ViewModel) {
             Screen.GameScreen -> {
                 GameScreen(
                     isPlayerWin,
-                    state.gameOver,
+                    state.gameState,
                     state.fields,
                     viewModel::onFieldSelect,
                     viewModel::onBackClick,

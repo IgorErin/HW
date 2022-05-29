@@ -7,17 +7,17 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import compose.GameState
+import compose.GameFieldState
 import compose.GameVariant
 import compose.view.items.GameItem
 import compose.view.items.SideItem
 
 @Composable
 fun StartScreen(
-    sides: List<GameState>,
+    sides: List<GameFieldState>,
     games: List<GameVariant>,
     onSelectGameVariant: (GameVariant) -> Unit,
-    onSelectSide: (GameState) -> Unit
+    onSelectSide: (GameFieldState) -> Unit
 ) = Box(
     contentAlignment = Alignment.Center,
     modifier = Modifier.fillMaxSize()
