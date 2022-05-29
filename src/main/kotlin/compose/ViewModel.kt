@@ -3,7 +3,6 @@ package compose
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import compose.exceptions.InitException
 
 class ViewModel {
     var state: State by mutableStateOf(initialState())
@@ -45,15 +44,26 @@ class ViewModel {
 
     fun onFieldSelect(firstIndex: Int, secondIndex: Int) {
         val newFields = state.fields.changeFields(firstIndex, secondIndex, state.nextMove)
+
         return updateState {
             copy(nextMove = nextMove.nextState(), fields = newFields, gameState = fieldsCheck(fields))
         }
     }
     fun onGameSelect(value: GameVariant) = updateState {
-        copy(gameVariant = value, screen = changeStartScreenToGameScreen(value, state.playerSide))
+        copy(
+            fields = fields.firstMoveFields(playerSide, value),
+            gameVariant = value,
+            screen = changeStartScreenToGameScreen(value, state.playerSide),
+            nextMove = nextMove.setNextMove(state.playerSide, value)
+        )
     }
     fun onSideSelect(value: GameFieldState) = updateState {
-        copy(playerSide = value, screen = changeStartScreenToGameScreen(state.gameVariant, value),)
+        copy(
+            fields = fields.firstMoveFields(value, gameVariant),
+            playerSide = value,
+            screen = changeStartScreenToGameScreen(gameVariant, value),
+            nextMove = nextMove.setNextMove(value, gameVariant)
+        )
     }
     fun onBackClick() = updateState { initialState() }
 }

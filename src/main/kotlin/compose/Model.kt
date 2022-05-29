@@ -1,5 +1,7 @@
 package compose
 
+import androidx.compose.animation.Crossfade
+
 fun fetchFields(): Array<Array<Field>> = Array(3) { Array(3) { Field(null) } }
 
 fun fetchGames(): List<GameVariant> = listOf(GameVariant.EasyBot, GameVariant.HardBot, GameVariant.Single)
@@ -102,4 +104,26 @@ private fun emptyPairs(fields: Array<Array<Field>>): MutableList<Pair<Int, Int>>
 
 private fun hardBotMovePosition(fields: Array<Array<Field>>, state: GameFieldState): Array<Array<Field>> {
     TODO()
+}
+
+fun GameFieldState.setNextMove(value: GameFieldState?, gameVariant: GameVariant?): GameFieldState {
+    if (value == null || gameVariant == null) {
+        return this
+    }
+
+    return when(gameVariant) {
+        GameVariant.Single -> GameFieldState.Cross
+        else -> value
+    }
+}
+
+fun Array<Array<Field>>.firstMoveFields(playerSide: GameFieldState?, gameVariant: GameVariant?): Array<Array<Field>> {
+    if (playerSide == null || gameVariant == null) {
+        return this
+    }
+
+    return when(playerSide) {
+        GameFieldState.Cross -> this
+        else -> this.botMoveFields(gameVariant, playerSide.nextState())
+    }
 }
