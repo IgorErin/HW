@@ -76,10 +76,10 @@ internal class MergeSortWithThreadsTest {
             Arguments.of(smallMediumList, 10),
             Arguments.of(bigMediumList, 10),
             Arguments.of(bigList, 10),
-            Arguments.of(smallList, 15),
-            Arguments.of(smallMediumList, 15),
-            Arguments.of(bigMediumList, 15),
-            Arguments.of(bigList, 15),
+            Arguments.of(smallList, 12),
+            Arguments.of(smallMediumList, 12),
+            Arguments.of(bigMediumList, 12),
+            Arguments.of(bigList, 12),
         )
     }
 }
