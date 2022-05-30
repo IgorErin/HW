@@ -57,7 +57,6 @@ internal class ModelKtTest {
         private var filledInArrayWithWinOnDiagonal = resourcesFilledInArrayWithWinOnDiagonal
         private var fullFilledInArrayWithDraw = resourcesFullFilledInArrayWithDraw
 
-
         @JvmStatic
         fun fieldsCheckTest() = listOf(
             Arguments.of(filledInArrayWithoutWin, GameState.Unfinished),

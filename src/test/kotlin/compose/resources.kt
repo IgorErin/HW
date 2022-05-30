@@ -1,7 +1,5 @@
 package compose
 
-import androidx.compose.runtime.internal.composableLambda
-
 val resourcesEmptyArray = Array(3) { Array(3) { Field(null) } }
 
 val resourcesFilledInArrayWithoutWin = arrayOf(

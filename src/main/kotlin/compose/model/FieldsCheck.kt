@@ -61,4 +61,3 @@ fun Array<Array<Field>>.indicesPairs(gameFieldState: GameFieldState?): MutableLi
 
     return list
 }
-
