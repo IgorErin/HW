@@ -12,7 +12,7 @@ fun Array<Array<Field>>.changeField(
 ): Array<Array<Field>> = this.apply { this[firstIndex][secondIndex].state = value }
 
 fun GameFieldState.nextMoveChange(fieldCheck: GameState, gameVariant: GameVariant?): GameFieldState {
-    gameVariant ?: throw NullPointerException("Game variant not selected")
+    gameVariant ?: throw NullPointerException("Game variant not selected, restart game, pleas")
 
     if (fieldCheck != GameState.Unfinished || gameVariant == GameVariant.Single) {
         return this.nextState()

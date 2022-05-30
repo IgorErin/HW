@@ -48,17 +48,3 @@ private fun wallMove(fields: Array<Array<Field>>, state: GameFieldState) = when 
     fields[2][0].state == null && fields[0][2].state != state -> fields.changeField(2, 0, state)
     else -> easyBotMovePosition(fields, state)
 }
-
-fun Array<Array<Field>>.indicesPairs(gameFieldState: GameFieldState?): MutableList<Pair<Int, Int>> {
-    val list = mutableListOf<Pair<Int, Int>>()
-
-    for (lineIndex in this.indices) {
-        for (columnIndex in this[lineIndex].indices) {
-            if (this[lineIndex][columnIndex].state == gameFieldState) {
-                list.add(Pair(lineIndex, columnIndex))
-            }
-        }
-    }
-
-    return list
-}

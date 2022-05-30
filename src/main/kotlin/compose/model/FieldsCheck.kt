@@ -1,6 +1,7 @@
 package compose.model
 
 import compose.Field
+import compose.GameFieldState
 import compose.GameState
 
 fun fieldsCheck(fields: Array<Array<Field>>): GameState = when {
@@ -46,3 +47,18 @@ private fun checkSubArray(fields: Array<Field>): Boolean {
         else -> false
     }
 }
+
+fun Array<Array<Field>>.indicesPairs(gameFieldState: GameFieldState?): MutableList<Pair<Int, Int>> {
+    val list = mutableListOf<Pair<Int, Int>>()
+
+    for (lineIndex in this.indices) {
+        for (columnIndex in this[lineIndex].indices) {
+            if (this[lineIndex][columnIndex].state == gameFieldState) {
+                list.add(Pair(lineIndex, columnIndex))
+            }
+        }
+    }
+
+    return list
+}
+
