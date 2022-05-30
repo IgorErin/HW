@@ -23,7 +23,7 @@ internal class MergeSortWithCoroutinesTest {
 
     @ParameterizedTest
     @MethodSource("sortTestWithZeroCoroutine")
-    fun `auto generated list sort test`(testList: MutableList<Int>, coroutineNumber: Int) {
+    fun `auto generated list coroutine sort test`(testList: MutableList<Int>, coroutineNumber: Int) {
         assertEquals(
             testList.sorted(),
             MergeSortWithCoroutines<Int>().sort(testList, coroutineNumber),
