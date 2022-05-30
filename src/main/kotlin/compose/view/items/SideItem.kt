@@ -24,7 +24,7 @@ fun SideItem(
     ) {
         Text(
             buildAnnotatedString {
-                append("$side") // TODO()
+                append("$side")
             },
             modifier = Modifier.padding(10.dp)
         )
