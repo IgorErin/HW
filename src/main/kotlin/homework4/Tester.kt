@@ -1,7 +1,6 @@
 import jetbrains.letsPlot.geom.geomLine
 import jetbrains.letsPlot.geom.geomPoint
 import jetbrains.letsPlot.ggplot
-import kotlin.math.pow
 import kotlin.random.Random
 
 class Tester(private val sortClass: MergeSort<Int>, private val testName: String) {
@@ -44,10 +43,6 @@ class Tester(private val sortClass: MergeSort<Int>, private val testName: String
         )
 
         Drawer().draw(plots)
-    }
-
-    private fun Int.pow(number: Int): Int {
-        return this.toDouble().pow(number).toInt()
     }
 
     companion object {
