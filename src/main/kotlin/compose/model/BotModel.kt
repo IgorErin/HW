@@ -2,57 +2,12 @@ package compose.model
 
 import compose.Field
 import compose.GameFieldState
-import compose.GameState
 import compose.GameVariant
 
 const val FIELD_SIZE = 3
 
-fun fieldsCheck(fields: Array<Array<Field>>): GameState = when {
-    checkLines(fields) || checkColumns(fields) || checkDiagonals(fields) -> GameState.Win
-    emptyPairs(fields).isEmpty() -> GameState.Draw
-    else -> GameState.Unfinished
-}
-
-private fun checkLines(fields: Array<Array<Field>>): Boolean {
-    for (subArray in fields) {
-        if (checkSubArray(subArray)) return true
-    }
-
-    return false
-}
-
-private fun checkColumns(fields: Array<Array<Field>>): Boolean {
-    for (columnIndex in fields.indices) {
-        val subArray = fields.map { it[columnIndex] }.toTypedArray()
-
-        if (checkSubArray(subArray)) return true
-    }
-
-    return false
-}
-
-private fun checkDiagonals(fields: Array<Array<Field>>): Boolean {
-    val generalDiagonal = mutableListOf<Field>()
-    val sideDiagonal = mutableListOf<Field>()
-
-    for (i in fields.indices) {
-        generalDiagonal.add(fields[i][i])
-        sideDiagonal.add(fields[i][2 - i])
-    }
-
-    return checkSubArray(generalDiagonal.toTypedArray()) || checkSubArray(sideDiagonal.toTypedArray())
-}
-private fun checkSubArray(fields: Array<Field>): Boolean {
-    val firstState = fields[0].state ?: return false
-
-    return when {
-        fields.count { it.state == firstState } == FIELD_SIZE -> true
-        else -> false
-    }
-}
-
 fun Array<Array<Field>>.botMoveFields(gameVariant: GameVariant?, playerSide: GameFieldState?): Array<Array<Field>> {
-    if (gameVariant == null || playerSide == null || emptyPairs(this).size == 0) {
+    if (gameVariant == null || playerSide == null || this.indicesPairs(null).size == 0) {
         return this
     }
 
@@ -64,42 +19,31 @@ fun Array<Array<Field>>.botMoveFields(gameVariant: GameVariant?, playerSide: Gam
 }
 
 private fun easyBotMovePosition(fields: Array<Array<Field>>, state: GameFieldState): Array<Array<Field>> {
-    val list = emptyPairs(fields)
+    val list = fields.indicesPairs(null)
     val index = list.indices.random()
     val position = list[index]
 
-    return fields.changeFields(position.first, position.second, state)
+    return fields.changeField(position.first, position.second, state)
 }
 
-private fun hardBotMovePos(fields: Array<Array<Field>>, state: GameFieldState): Array<Array<Field>> = when (state) {
-    GameFieldState.Cross -> crossBotMoveFields(fields)
-    GameFieldState.Zero -> zeroBotMoveFields(fields)
-}
-
-private fun crossBotMoveFields(fields: Array<Array<Field>>): Array<Array<Field>> {
-    TODO()
-}
-
-private fun zeroBotMoveFields(fields: Array<Array<Field>>): Array<Array<Field>> = when {
-    fields[1][1].state == null -> fields.changeFields(1, 1, GameFieldState.Zero)
-    else -> {
-        val listOfEmptyPositions = emptyPairs(fields)
-
-        if (fields[1][1].state == GameFieldState.Zero) {
-
-        } else {
-
-        }
-        TODO()
+private fun hardBotMovePos(fields: Array<Array<Field>>, state: GameFieldState): Array<Array<Field>> = when {
+    fields[1][1].state == null -> fields.changeField(1, 1, state)
+    fields[1][1].state != state -> when {
+        fields[0][2].state == null && fields[2][0].state != state -> fields.changeField(0, 2, state)
+        fields[0][0].state == null && fields[2][2].state != state -> fields.changeField(0, 0, state)
+        fields[2][2].state == null && fields[0][0].state != state -> fields.changeField(2, 2, state)
+        fields[2][0].state == null && fields[0][2].state != state -> fields.changeField(2, 0, state)
+        else -> easyBotMovePosition(fields, state)
     }
+    else -> easyBotMovePosition(fields, state)
 }
 
-private fun emptyPairs(fields: Array<Array<Field>>): MutableList<Pair<Int, Int>> {
+fun Array<Array<Field>>.indicesPairs(gameFieldState: GameFieldState?): MutableList<Pair<Int, Int>> {
     val list = mutableListOf<Pair<Int, Int>>()
 
-    for (lineIndex in fields.indices) {
-        for (columnIndex in fields[lineIndex].indices) {
-            if (fields[lineIndex][columnIndex].state == null) {
+    for (lineIndex in this.indices) {
+        for (columnIndex in this[lineIndex].indices) {
+            if (this[lineIndex][columnIndex].state == gameFieldState) {
                 list.add(Pair(lineIndex, columnIndex))
             }
         }

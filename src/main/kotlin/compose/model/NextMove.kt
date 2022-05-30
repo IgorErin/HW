@@ -5,7 +5,7 @@ import compose.GameFieldState
 import compose.GameState
 import compose.GameVariant
 
-fun Array<Array<Field>>.changeFields(
+fun Array<Array<Field>>.changeField(
     firstIndex: Int,
     secondIndex: Int,
     value: GameFieldState

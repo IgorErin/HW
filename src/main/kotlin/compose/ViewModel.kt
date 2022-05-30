@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import compose.model.botMoveFields
-import compose.model.changeFields
+import compose.model.changeField
 import compose.model.changeStartScreenToGameScreen
 import compose.model.fetchFields
 import compose.model.fetchGames
@@ -53,7 +53,7 @@ class ViewModel {
     }
 
     fun onFieldSelect(firstIndex: Int, secondIndex: Int) {
-        val newFields = state.fields.changeFields(firstIndex, secondIndex, state.nextMove)
+        val newFields = state.fields.changeField(firstIndex, secondIndex, state.nextMove)
         val newGameState = fieldsCheck(newFields)
         val botMoveFields = newFields.botMoveFields(state.gameVariant, state.playerSide)
 

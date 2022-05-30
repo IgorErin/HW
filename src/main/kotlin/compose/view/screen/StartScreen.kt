@@ -16,7 +16,7 @@ import compose.GameVariant
 import compose.view.items.GameItem
 import compose.view.items.SideItem
 
-@Suppress("FunctionNaming")
+@Suppress("FunctionNaming", "LongParameterList")
 @Composable
 fun StartScreen(
     playerSide: GameFieldState?,
