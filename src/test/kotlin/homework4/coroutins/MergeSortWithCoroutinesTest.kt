@@ -72,10 +72,10 @@ internal class MergeSortWithCoroutinesTest {
             Arguments.of(smallMediumList, 10),
             Arguments.of(bigMediumList, 10),
             Arguments.of(bigList, 10),
-            Arguments.of(smallList, 20),
-            Arguments.of(smallMediumList, 20),
-            Arguments.of(bigMediumList, 20),
-            Arguments.of(bigList, 20),
+            Arguments.of(smallList, 15),
+            Arguments.of(smallMediumList, 15),
+            Arguments.of(bigMediumList, 15),
+            Arguments.of(bigList, 15),
         )
     }
 }
