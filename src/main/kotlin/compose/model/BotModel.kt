@@ -28,13 +28,24 @@ private fun easyBotMovePosition(fields: Array<Array<Field>>, state: GameFieldSta
 
 private fun hardBotMovePos(fields: Array<Array<Field>>, state: GameFieldState): Array<Array<Field>> = when {
     fields[1][1].state == null -> fields.changeField(1, 1, state)
-    fields[1][1].state != state -> when {
-        fields[0][2].state == null && fields[2][0].state != state -> fields.changeField(0, 2, state)
-        fields[0][0].state == null && fields[2][2].state != state -> fields.changeField(0, 0, state)
-        fields[2][2].state == null && fields[0][0].state != state -> fields.changeField(2, 2, state)
-        fields[2][0].state == null && fields[0][2].state != state -> fields.changeField(2, 0, state)
-        else -> easyBotMovePosition(fields, state)
-    }
+    fields[1][1].state != state -> wallMove(fields, state)
+    fields[1][1].state == state -> cornerMove(fields, state)
+    else -> easyBotMovePosition(fields, state)
+}
+
+private fun cornerMove(fields: Array<Array<Field>>, state: GameFieldState) = when {
+    fields[1][0].state == null && fields[1][2].state == state -> fields.changeField(1, 0, state)
+    fields[0][1].state == null && fields[2][1].state == state -> fields.changeField(0, 1, state)
+    fields[1][2].state == null && fields[1][0].state == state -> fields.changeField(1, 2, state)
+    fields[2][1].state == null && fields[0][1].state == state -> fields.changeField(2, 1, state)
+    else -> wallMove(fields, state)
+}
+
+private fun wallMove(fields: Array<Array<Field>>, state: GameFieldState) = when {
+    fields[0][2].state == null && fields[2][0].state != state -> fields.changeField(0, 2, state)
+    fields[0][0].state == null && fields[2][2].state != state -> fields.changeField(0, 0, state)
+    fields[2][2].state == null && fields[0][0].state != state -> fields.changeField(2, 2, state)
+    fields[2][0].state == null && fields[0][2].state != state -> fields.changeField(2, 0, state)
     else -> easyBotMovePosition(fields, state)
 }
 
