@@ -1,3 +1,4 @@
+import homework4.threads.MergeSortWithThreadsTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
@@ -72,6 +73,10 @@ internal class MergeSortWithCoroutinesTest {
             Arguments.of(smallMediumList, 10),
             Arguments.of(bigMediumList, 10),
             Arguments.of(bigList, 10),
+            Arguments.of(smallList, 20),
+            Arguments.of(smallMediumList, 20),
+            Arguments.of(bigMediumList, 20),
+            Arguments.of(bigList, 20),
         )
     }
 }
