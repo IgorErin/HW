@@ -58,32 +58,45 @@ class Drawer {
                 )
             }
 
-            this.add(Box.createHorizontalBox().apply {
-                border = BorderFactory.createTitledBorder("Plot")
-                for (elem in plotButtonGroup.elements) {
-                    add(elem)
-                }
-            })
+            this.add(
+                Box
+                    .createHorizontalBox()
+                    .apply {
+                        border = BorderFactory.createTitledBorder("Plot")
+                        for (elem in plotButtonGroup.elements) {
+                            add(elem)
+                        }
+                    }
+            )
 
             // Preserve aspect ratio selector
             val aspectRadioButtonGroup = ButtonGroup()
-            aspectRadioButtonGroup.add(JRadioButton("Original", false).apply {
-                addActionListener {
-                    controller.preserveAspectRadio = true
-                }
-            })
-            aspectRadioButtonGroup.add(JRadioButton("Fit container", true).apply {
-                addActionListener {
-                    controller.preserveAspectRadio = false
-                }
-            })
+            aspectRadioButtonGroup.add(
+                JRadioButton("Original", false)
+                    .apply {
+                        addActionListener {
+                            controller.preserveAspectRadio = true
+                        }
+                    }
+            )
+            aspectRadioButtonGroup.add(
+                JRadioButton("Fit container", true)
+                    .apply {
+                        addActionListener {
+                            controller.preserveAspectRadio = false
+                        }
+                    }
+            )
 
-            this.add(Box.createHorizontalBox().apply {
-                border = BorderFactory.createTitledBorder("Aspect ratio")
-                for (elem in aspectRadioButtonGroup.elements) {
-                    add(elem)
-                }
-            })
+            this.add(
+                Box.createHorizontalBox()
+                    .apply {
+                        border = BorderFactory.createTitledBorder("Aspect ratio")
+                        for (elem in aspectRadioButtonGroup.elements) {
+                            add(elem)
+                        }
+                    }
+            )
         }
 
         return controlsPanel

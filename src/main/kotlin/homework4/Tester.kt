@@ -31,8 +31,8 @@ class Tester(private val sortClass: MergeSort<Int>, private val testName: String
         val data = mapOf<String, Any>(
             "nanoTime" to timeCount,
             "size" to sizeCount,
-            "$testName count" to List(SIZE_OF_LABELS_LIST) {
-                    index -> 2.pow(index % PLOT_MEMBERS_COUNT).toString()
+            "$testName count" to List(SIZE_OF_LABELS_LIST) { index ->
+                2.pow(index % PLOT_MEMBERS_COUNT).toString()
             }
         )
 

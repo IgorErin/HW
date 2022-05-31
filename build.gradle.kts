@@ -28,6 +28,9 @@ fun getJavaFXPlatform(): String {
 }
 
 dependencies {
+    implementation(kotlin("stdlib"))
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.19.0")
+
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
 
     implementation("org.slf4j:slf4j-simple:1.7.36")
@@ -38,9 +41,7 @@ dependencies {
 
     implementation("org.jetbrains.lets-plot:lets-plot-jfx:2.3.0")
     implementation("org.jetbrains.lets-plot:lets-plot-kotlin-jvm:3.2.0")
-
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.20.0")
-
+    
     testImplementation(platform("org.junit:junit-bom:5.8.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation(kotlin("test"))
