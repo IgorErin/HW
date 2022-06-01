@@ -35,6 +35,6 @@ internal class MergeSortWithThreadsTest {
         )
 
         @JvmStatic
-        fun sortTestWithZeroThreads() = autoGenSortTestArguments
+        fun sortTestWithZeroThreads() = autoGenSortTestArguments()
     }
 }

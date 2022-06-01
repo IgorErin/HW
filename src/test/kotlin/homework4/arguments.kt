@@ -13,4 +13,4 @@ private fun testList(index: Int): List<Int> = when {
     else -> bigList()
 }
 
-val autoGenSortTestArguments = List(12) { Arguments.of(testList(it), it - 2) }
+fun autoGenSortTestArguments(): List<Arguments> =  List(12) { Arguments.of(testList(it), it - 2) }

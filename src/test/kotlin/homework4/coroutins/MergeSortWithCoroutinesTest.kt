@@ -31,6 +31,6 @@ internal class MergeSortWithCoroutinesTest {
         )
 
         @JvmStatic
-        fun sortTestWithZeroCoroutine() = autoGenSortTestArguments
+        fun sortTestWithZeroCoroutine() = autoGenSortTestArguments()
     }
 }
