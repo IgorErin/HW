@@ -1,15 +1,12 @@
 package homework4.threads
 
 import MergeSortWithThreads
-import bigList
-import bigMediumList
+import homework4.autoGenSortTestArguments
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import pow
-import smallList
-import smallMediumList
 
 internal class MergeSortWithThreadsTest {
     @ParameterizedTest
@@ -38,31 +35,6 @@ internal class MergeSortWithThreadsTest {
         )
 
         @JvmStatic
-        fun sortTestWithZeroThreads() = listOf(
-            Arguments.of(smallList(), -1),
-            Arguments.of(smallMediumList(), -3),
-            Arguments.of(bigMediumList(), -5),
-            Arguments.of(bigList(), -100),
-            Arguments.of(smallList(), 0),
-            Arguments.of(smallMediumList(), 0),
-            Arguments.of(bigMediumList(), 0),
-            Arguments.of(bigList(), 0),
-            Arguments.of(smallList(), 1),
-            Arguments.of(smallMediumList(), 1),
-            Arguments.of(bigMediumList(), 1),
-            Arguments.of(bigList(), 1),
-            Arguments.of(smallList(), 5),
-            Arguments.of(smallMediumList(), 5),
-            Arguments.of(bigMediumList(), 5),
-            Arguments.of(bigList(), 5),
-            Arguments.of(smallList(), 10),
-            Arguments.of(smallMediumList(), 10),
-            Arguments.of(bigMediumList(), 10),
-            Arguments.of(bigList(), 10),
-            Arguments.of(smallList(), 12),
-            Arguments.of(smallMediumList(), 12),
-            Arguments.of(bigMediumList(), 12),
-            Arguments.of(bigList(), 12),
-        )
+        fun sortTestWithZeroThreads() = autoGenSortTestArguments
     }
 }
