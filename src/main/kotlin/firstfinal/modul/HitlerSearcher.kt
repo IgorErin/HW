@@ -1,7 +1,6 @@
 package firstfinal.modul
 
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.jsoup.Jsoup
@@ -15,13 +14,12 @@ class HitlerSearcher(private val url: String) {
         var coroutineList: List<Deferred<Unit>>
         var newUrl: Pair<String, Int>
 
-
         while (listOfUrls.isNotEmpty()) {
             val indicesBound = min(coroutineCount, listOfUrls.size)
             coroutineList = List(indicesBound) { async { bfsStep(listOfUrls[it]) } }
             coroutineList.forEach { it.await() }
 
-            for (ind in 0 until indicesBound) {
+            repeat(indicesBound) {
                 newUrl = listOfUrls[0]
 
                 if (searchHitler(newUrl.first)) {
@@ -31,7 +29,7 @@ class HitlerSearcher(private val url: String) {
                 if (newUrl.second > dept) {
                     return@runBlocking null
                 }
-                println("article > ${newUrl.first}")
+                println("article -> ${newUrl.first}")
                 listOfUrls.removeAt(0)
             }
         }
@@ -41,7 +39,6 @@ class HitlerSearcher(private val url: String) {
 
     private fun bfsStep(newUrl: Pair<String, Int>) {
         listOfUrls.addAll(getUrls(newUrl.first).map { Pair(it, newUrl.second + 1) })
-        print("lol")
     }
 
     private fun searchHitler(url: String): Boolean {

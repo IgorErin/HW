@@ -2,10 +2,11 @@ package firstfinal
 
 import firstfinal.modul.HitlerSearcher
 
+const val RAND_WIKI_URL = "https://en.wikipedia.org/wiki/Special:Random"
 fun notFound(number: Int): String = "with depth $number not a single hitler was found"
 
 fun main() {
-    /*println("Enter number of search dept:")
+    println("Enter number of search dept:")
 
     val searchDept = readLine()?.toInt()
     require(searchDept != null && searchDept > 0) {
@@ -20,13 +21,11 @@ fun main() {
     }
 
     println("Enter site url:")
-
-    //val inputString = readLine().toString() TODO()*/
-    val inputString = ""
+    val inputString = readLine().toString()
 
     if (inputString.isEmpty()) {
-        print(HitlerSearcher("https://en.wikipedia.org/wiki/AVL_tree").search(256, 4)) //?: notFound(TODO()))
+        print(HitlerSearcher(RAND_WIKI_URL).search(searchDept, processorCount) ?: notFound(searchDept))
     } else {
-        print(HitlerSearcher(inputString).search(256, 1) )//?:notFound(TODO()))
+        print(HitlerSearcher(inputString).search(searchDept, processorCount) ?: notFound(searchDept))
     }
 }
