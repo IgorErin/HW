@@ -6,7 +6,7 @@ import kotlinx.coroutines.runBlocking
 import org.jsoup.Jsoup
 import java.lang.Integer.min
 
-class HitlerSearcher(private val url: String) {
+class HitlerSearcher(url: String) {
     private val listOfUrls: MutableList<Triple<String, Int, MutableList<String>>> =
         mutableListOf(Triple(url, 1, mutableListOf()))
     private val prefix: String = url.split("/wiki")[0]

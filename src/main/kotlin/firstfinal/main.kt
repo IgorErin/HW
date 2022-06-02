@@ -11,14 +11,14 @@ fun main() {
 
         val searchDept = readLine()?.toInt()
         require(searchDept != null && searchDept > 0) {
-            "search dept input error, restart the program pleas"
+            "search dept input error, depth must be greater than 0, but was $searchDept"
         }
 
         print("Enter number of processors:")
 
         val processorCount = readLine()?.toInt()
         require(processorCount != null && processorCount > 0) {
-            "processor count input error, restart the program pleas"
+            "processor number input error, must be greater than 0, but was $processorCount"
         }
 
         print("Enter site url:")
@@ -30,7 +30,9 @@ fun main() {
         } else {
             print(HitlerSearcher(inputString).search(searchDept, processorCount) ?: notFound(searchDept))
         }
+    } catch (e: java.lang.NumberFormatException) {
+        println("input error, are you sure you entered a number? restart the program pleas")
     } catch (e: java.lang.IllegalArgumentException) {
-        println(e)
+        print("$e, restart the program pleas")
     }
 }
