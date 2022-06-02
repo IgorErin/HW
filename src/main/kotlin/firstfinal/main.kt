@@ -2,6 +2,8 @@ package firstfinal
 
 import firstfinal.modul.HitlerSearcher
 
+fun notFound(number: Int): String = "with depth $number not a single hitler was found"
+
 fun main() {
     /*println("Enter number of search dept:")
 
@@ -23,8 +25,8 @@ fun main() {
     val inputString = ""
 
     if (inputString.isEmpty()) {
-        print(HitlerSearcher("https://en.wikipedia.org/wiki/AVL_tree").search(256, 4))
+        print(HitlerSearcher("https://en.wikipedia.org/wiki/AVL_tree").search(256, 4)) //?: notFound(TODO()))
     } else {
-        print(HitlerSearcher(inputString).search(256, 5))//TODO()
+        print(HitlerSearcher(inputString).search(256, 1) )//?:notFound(TODO()))
     }
 }

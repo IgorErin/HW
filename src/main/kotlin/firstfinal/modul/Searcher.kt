@@ -1,53 +1,48 @@
 package firstfinal.modul
 
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.jsoup.Jsoup
+import java.lang.Integer.min
 
 class HitlerSearcher(private val url: String) {
-    private val listOfUrls: MutableList<Pair<String, Int>> = mutableListOf(Pair(url, 1))
+    private val listOfUrls: MutableList<Pair<String, Int>> = mutableListOf(Pair(url, 1), Pair(url, 1))
     private val prefix: String = url.split("/wiki")[0]
 
-    val coroutineList = listOf<Job>()
-
     fun search(dept: Int, coroutineCount: Int): Int? = runBlocking {
-        var count = 0
-        val coroutineList = listOf<Job>()
+        var coroutineList: List<Deferred<Unit>>
+        var newUrl: Pair<String, Int>
 
-        for (i in 0 until coroutineCount) {
-            val coroutine = async {
 
+        while (listOfUrls.isNotEmpty()) {
+            val indicesBound = min(coroutineCount, listOfUrls.size)
+            coroutineList = List(indicesBound) { async { bfsStep(listOfUrls[it]) } }
+            coroutineList.forEach { it.await() }
+
+            for (ind in 0 until indicesBound) {
+                newUrl = listOfUrls[0]
+
+                if (searchHitler(newUrl.first)) {
+                    return@runBlocking newUrl.second
+                }
+
+                if (newUrl.second > dept) {
+                    return@runBlocking null
+                }
+                println("article > ${newUrl.first}")
+                listOfUrls.removeAt(0)
             }
-        }
-
-        while (listOfUrls.isNotEmpty() || coroutineList.isNotEmpty()) {
-            count += 1
-            val newUrl = listOfUrls[0]
-
-            println("article $count -> ${newUrl.first}")
-
-            if (searchHitler(newUrl.first)) {
-                return@runBlocking newUrl.second
-            }
-
-            if (newUrl.second > dept) {
-                return@runBlocking null
-            }
-
-            listOfUrls.addAll(getUrls(newUrl.first).map { Pair(it, newUrl.second + 1) })
-            listOfUrls.removeAt(0)
         }
 
         return@runBlocking null
     }
 
-    /*private fun asyncJob(url: String) {
-
-        async {
-
-        }
-    }*/
+    private fun bfsStep(newUrl: Pair<String, Int>) {
+        listOfUrls.addAll(getUrls(newUrl.first).map { Pair(it, newUrl.second + 1) })
+        print("lol")
+    }
 
     private fun searchHitler(url: String): Boolean {
         val element = getHtml(url)
