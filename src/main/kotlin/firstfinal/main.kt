@@ -1,7 +1,6 @@
 package firstfinal
 
-import firstfinal.modul.Searcher
-import java.io.IOException
+import firstfinal.modul.SearcherHitler
 
 fun main() {
     /*println("Enter number of search dept")
@@ -21,8 +20,13 @@ fun main() {
     val inputString = ""
 
     if (inputString.isEmpty()) {
-        Searcher("https://en.wikipedia.org/wiki/Special:Random").search()
+        print(SearcherHitler("https://en.wikipedia.org/wiki/AVL_tree").search())
     } else {
-        Searcher(inputString).search()//TODO()
+        print(SearcherHitler(inputString).search())//TODO()
     }
 }
+
+
+//https://en.wikipedia.org/wiki/Adolf_Hitler
+
+// rand = https://en.wikipedia.org/wiki/Special:Random"
