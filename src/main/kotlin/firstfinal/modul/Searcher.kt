@@ -1,18 +1,27 @@
 package firstfinal.modul
 
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.jsoup.Jsoup
-import java.util.Queue
 
-class SearcherHitler(private val url: String) {
+class HitlerSearcher(private val url: String) {
     private val listOfUrls: MutableList<Pair<String, Int>> = mutableListOf(Pair(url, 1))
     private val prefix: String = url.split("/wiki")[0]
 
+    val coroutineList = listOf<Job>()
+
     fun search(dept: Int, coroutineCount: Int): Int? = runBlocking {
         var count = 0
+        val coroutineList = listOf<Job>()
 
+        for (i in 0 until coroutineCount) {
+            val coroutine = async {
 
-        while (listOfUrls.isNotEmpty()) {
+            }
+        }
+
+        while (listOfUrls.isNotEmpty() || coroutineList.isNotEmpty()) {
             count += 1
             val newUrl = listOfUrls[0]
 
@@ -30,8 +39,15 @@ class SearcherHitler(private val url: String) {
             listOfUrls.removeAt(0)
         }
 
-        return@runBlocking 0
+        return@runBlocking null
     }
+
+    /*private fun asyncJob(url: String) {
+
+        async {
+
+        }
+    }*/
 
     private fun searchHitler(url: String): Boolean {
         val element = getHtml(url)
@@ -49,4 +65,3 @@ class SearcherHitler(private val url: String) {
         return Jsoup.connect(url).get().body()
     }
 }
-
