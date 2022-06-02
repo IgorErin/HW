@@ -5,24 +5,28 @@ import org.jsoup.Jsoup
 import java.util.Queue
 
 class SearcherHitler(private val url: String) {
-    private val listOfUrls: MutableList<Pair<String, Int>> = mutableListOf(Pair(url, 0))
+    private val listOfUrls: MutableList<Pair<String, Int>> = mutableListOf(Pair(url, 1))
     private val prefix: String = url.split("/wiki")[0]
 
-    fun search(): Int = runBlocking {
-        searchHitler(url)
+    fun search(dept: Int, coroutineCount: Int): Int? = runBlocking {
         var count = 0
+
 
         while (listOfUrls.isNotEmpty()) {
             count += 1
             val newUrl = listOfUrls[0]
 
-            println("-> ${newUrl.first}")
+            println("article $count -> ${newUrl.first}")
 
             if (searchHitler(newUrl.first)) {
                 return@runBlocking newUrl.second
             }
 
-            listOfUrls.addAll(getUrls(newUrl.first).map { Pair(it, count) })
+            if (newUrl.second > dept) {
+                return@runBlocking null
+            }
+
+            listOfUrls.addAll(getUrls(newUrl.first).map { Pair(it, newUrl.second + 1) })
             listOfUrls.removeAt(0)
         }
 
@@ -32,7 +36,7 @@ class SearcherHitler(private val url: String) {
     private fun searchHitler(url: String): Boolean {
         val element = getHtml(url)
 
-        return element.text().contains("Hitler") //TODO()
+        return element.text().contains("Hitler")
     }
 
     private fun getUrls(url: String): List<String> {
